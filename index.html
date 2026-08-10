@@ -420,7 +420,6 @@ for (const [id, s] of Object.entries(SUBSTRATES)) {
 function updateSubstrateDesc() {
   document.getElementById('substrateDesc').textContent = SUBSTRATES[substrateSelect.value].description;
 }
-substrateSelect.addEventListener('change', updateSubstrateDesc);
 updateSubstrateDesc();
 
 function calculateSubstrate() {
@@ -456,8 +455,13 @@ function calculateSubstrate() {
   document.getElementById('stepsCard').classList.remove('hidden');
 }
 
-document.getElementById('calcBtn').addEventListener('click', calculateSubstrate);
-document.getElementById('spawn').addEventListener('keydown', e => { if (e.key === 'Enter') calculateSubstrate(); });
+function refreshSubstrate() {
+  updateSubstrateDesc();
+  calculateSubstrate();
+}
+substrateSelect.addEventListener('change', refreshSubstrate);
+document.getElementById('spawn').addEventListener('input', refreshSubstrate);
+document.getElementById('calcBtn').addEventListener('click', refreshSubstrate);
 
 /* ---------------------------------------------------------------- */
 /* Liquid culture calculator                                         */
@@ -612,7 +616,6 @@ for (const [id, r] of Object.entries(LC_RECIPES)) {
 function updateLcDesc() {
   document.getElementById('lcDesc').textContent = LC_RECIPES[lcSelect.value].description;
 }
-lcSelect.addEventListener('change', updateLcDesc);
 updateLcDesc();
 
 function calculateLc() {
@@ -650,9 +653,14 @@ function calculateLc() {
   document.getElementById('lcStepsCard').classList.remove('hidden');
 }
 
-document.getElementById('lcCalcBtn').addEventListener('click', calculateLc);
+function refreshLc() {
+  updateLcDesc();
+  calculateLc();
+}
+lcSelect.addEventListener('change', refreshLc);
+document.getElementById('lcCalcBtn').addEventListener('click', refreshLc);
 ['lcJarVol', 'lcJarCount'].forEach(id => {
-  document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') calculateLc(); });
+  document.getElementById(id).addEventListener('input', refreshLc);
 });
 
 /* ---------------------------------------------------------------- */
@@ -874,7 +882,6 @@ for (const [id, r] of Object.entries(AGAR_RECIPES)) {
 function updateAgarDesc() {
   document.getElementById('agarDesc').textContent = AGAR_RECIPES[agarSelect.value].description;
 }
-agarSelect.addEventListener('change', updateAgarDesc);
 updateAgarDesc();
 
 function calculateAgar() {
@@ -912,9 +919,14 @@ function calculateAgar() {
   document.getElementById('agarStepsCard').classList.remove('hidden');
 }
 
-document.getElementById('agarCalcBtn').addEventListener('click', calculateAgar);
+function refreshAgar() {
+  updateAgarDesc();
+  calculateAgar();
+}
+agarSelect.addEventListener('change', refreshAgar);
+document.getElementById('agarCalcBtn').addEventListener('click', refreshAgar);
 ['agarPlateVol', 'agarPlateCount'].forEach(id => {
-  document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') calculateAgar(); });
+  document.getElementById(id).addEventListener('input', refreshAgar);
 });
 
 calculateSubstrate();
