@@ -1,4 +1,4 @@
-const TAB_ORDER = ['substrate', 'grain', 'lc', 'agar', 'species', 'recipes', 'conditions', 'yield', 'drying'];
+const TAB_ORDER = ['species', 'grain', 'lc', 'agar', 'substrate', 'conditions', 'yield', 'drying', 'recipes'];
 
 export default function Tabs({ active, onChange, ui }) {
   const labels = {
