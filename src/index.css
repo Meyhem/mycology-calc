@@ -183,6 +183,31 @@
   .profile-item .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); margin-bottom: 3px; }
   .profile-item .v { font-size: 0.92rem; font-weight: 600; }
 
+  .recipe-card { padding: 0; overflow: hidden; }
+  .recipe-toggle {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 20px;
+    position: relative;
+    color: inherit;
+    font: inherit;
+  }
+  .recipe-toggle h2 { padding-right: 28px; }
+  .recipe-toggle-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--muted);
+    line-height: 1;
+  }
+  .recipe-body { padding: 0 20px 20px; }
+
   .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .pill {
     background: var(--warn-bg);
