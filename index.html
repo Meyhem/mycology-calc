@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mushroom Substrate Calculator</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --panel: #ffffff;
+    --ink: #2b241b;
+    --muted: #6b6255;
+    --accent: #6b8e5a;
+    --accent-dark: #4d6b40;
+    --border: #ddd5c4;
+    --warn-bg: #fbf3e0;
+    --warn-border: #e6c877;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    padding: 24px 16px 60px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 { font-size: 1.6rem; margin: 0 0 6px; }
+  header p { color: var(--muted); margin: 0; font-size: 0.95rem; }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+  .field { margin-bottom: 16px; }
+  select, input[type=number] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fffdf8;
+    color: var(--ink);
+  }
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; }
+
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s;
+  }
+  button:hover { background: var(--accent-dark); }
+
+  .desc { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+  th { color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tfoot td { font-weight: 700; border-bottom: none; border-top: 2px solid var(--border); }
+
+  ol.steps { padding-left: 22px; margin: 0; }
+  ol.steps li { margin-bottom: 10px; }
+
+  .badge {
+    display: inline-block;
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    color: #7a5c00;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-top: 12px;
+  }
+
+  h2 { font-size: 1.1rem; margin: 0 0 12px; }
+  .hidden { display: none; }
+  .footnote { font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🍄 Mushroom Substrate Calculator</h1>
+    <p>Pick a bulk substrate recipe and your grain spawn amount to get ingredient quantities and prep steps.</p>
+  </header>
+
+  <div class="card">
+    <div class="field">
+      <label for="substrate">Target substrate</label>
+      <select id="substrate"></select>
+      <div class="desc" id="substrateDesc"></div>
+    </div>
+    <div class="field">
+      <label for="spawn">Grain spawn amount (mL)</label>
+      <input type="number" id="spawn" value="1000" min="1" step="50">
+      <div class="desc">Tip: 1 L of colonized grain spawn weighs roughly 700–800 g.</div>
+    </div>
+    <button id="calcBtn">Calculate recipe</button>
+  </div>
+
+  <div class="card hidden" id="resultsCard">
+    <h2>Ingredients</h2>
+    <table>
+      <thead>
+        <tr><th>Ingredient</th><th class="num">Volume</th><th class="num">Weight</th></tr>
+      </thead>
+      <tbody id="ingredientRows"></tbody>
+      <tfoot>
+        <tr><td>Total substrate</td><td class="num" id="totalVol"></td><td class="num" id="totalWeight"></td></tr>
+      </tfoot>
+    </table>
+    <div class="footnote">Weights are approximate — actual density varies by moisture content and material brand. Adjust water gradually and check hydration by feel (squeeze test: a few drops of water, no dripping stream).</div>
+  </div>
+
+  <div class="card hidden" id="stepsCard">
+    <h2>Preparation steps</h2>
+    <ol class="steps" id="stepsList"></ol>
+    <div class="badge" id="hygieneNote"></div>
+  </div>
+</div>
+
+<script>
+const fmt = (n) => {
+  if (n >= 1000) return (n/1000).toFixed(2).replace(/\.00$/,'') + ' L / kg′';
+  return Math.round(n).toString();
+};
+// unified formatter: value in base unit (mL or g), returns readable string
+function fmtVol(mL) {
+  if (mL >= 1000) return (mL/1000).toFixed(2).replace(/\.00$/,'') + ' L';
+  return Math.round(mL) + ' mL';
+}
+function fmtWeight(g) {
+  if (g >= 1000) return (g/1000).toFixed(2).replace(/\.00$/,'') + ' kg';
+  return Math.round(g) + ' g';
+}
+
+// Each substrate: given spawn volume V (mL), returns list of ingredients
+// {name, volumeMl (optional), weightG (optional)} and a steps() function.
+const SUBSTRATES = {
+  cvg: {
+    name: 'CVG — Coco Coir / Vermiculite / Gypsum',
+    description: 'General-purpose bulk substrate for gourmet mushrooms (oyster, lion\'s mane, etc). Ratio ≈ 1 part spawn : 2 parts substrate by volume.',
+    calc(V) {
+      const coirVol = V;               // hydrated coir volume, mL
+      const vermVol = V;                // vermiculite volume, mL
+      const coirDryWeight = coirVol * 0.16;   // g dry coir brick needed to yield this hydrated volume
+      const coirWater = coirVol * 0.75;       // mL water to hydrate the brick
+      const vermWeight = vermVol * 0.13;      // g
+      const substrateDryWeight = coirDryWeight + vermWeight;
+      const gypsumWeight = substrateDryWeight * 0.02;
+      return {
+        ingredients: [
+          { name: 'Coco coir brick (dry, compressed)', weightG: coirDryWeight },
+          { name: 'Water (to hydrate coir)', volumeMl: coirWater },
+          { name: 'Vermiculite', volumeMl: vermVol, weightG: vermWeight },
+          { name: 'Gypsum (calcium sulfate)', weightG: gypsumWeight },
+        ],
+        totalVolume: coirVol + vermVol,
+        totalWeight: coirDryWeight + coirWater + vermWeight + gypsumWeight,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Break up the dry coco coir brick (${fmtWeight(r.ingredients[0].weightG)}) into a large tub.`,
+        `Pour in ${fmtVol(r.ingredients[1].volumeMl)} of near-boiling water, cover, and let it sit 20–30 min until fully absorbed and cool to room temperature.`,
+        `Fluff the hydrated coir with gloved hands to break up clumps.`,
+        `Add ${fmtVol(r.ingredients[2].volumeMl)} vermiculite and ${fmtWeight(r.ingredients[3].weightG)} gypsum. Mix thoroughly.`,
+        `Check moisture with a squeeze test — a few drops should release, no steady stream. Add small amounts of water if too dry.`,
+        `Break your grain spawn (${fmtVol(V)}) apart and layer/mix it evenly through the substrate (roughly 1:2 spawn-to-substrate by volume).`,
+        `Pack loosely into a grow bag/tub with filter patch or air holes, and incubate in the dark at 21–24°C until fully colonized.`,
+      ];
+    },
+    hygiene: 'Coco coir/vermiculite mixes are low-nutrient, so they resist contamination reasonably well, but still work with clean hands/gloves and sanitized tools.'
+  },
+
+  masters: {
+    name: "Master's Mix — Soy Hull + Hardwood Pellets",
+    description: 'High-nutrient, high-yield substrate for gourmet mushrooms. Ratio ≈ 1 part spawn : 1 part substrate by volume.',
+    calc(V) {
+      const dryPelletTotal = V * 0.4; // g, expands ~2.5x when hydrated
+      const soyHull = dryPelletTotal / 2;
+      const hardwood = dryPelletTotal / 2;
+      const soakWater = dryPelletTotal * 3; // generous soak, excess drained
+      return {
+        ingredients: [
+          { name: 'Soy hull pellets (dry)', weightG: soyHull },
+          { name: 'Hardwood pellets (dry)', weightG: hardwood },
+          { name: 'Water (for soaking, excess drained)', volumeMl: soakWater },
+        ],
+        totalVolume: V,
+        totalWeight: dryPelletTotal,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Combine ${fmtWeight(r.ingredients[0].weightG)} soy hull pellets and ${fmtWeight(r.ingredients[1].weightG)} hardwood pellets in a bucket.`,
+        `Cover with ${fmtVol(r.ingredients[2].volumeMl)} of water and soak for 1–2 hours — pellets will swell and break apart into a sawdust-like texture.`,
+        `Drain thoroughly in a colander/mesh bag until no water drips out (field capacity). This is your final hydrated substrate, about ${fmtVol(V)}.`,
+        `Sterilize the hydrated substrate in bags/jars at 15 psi for 90 minutes (this mix is nutrient-rich and needs full sterilization, not just pasteurization).`,
+        `Let cool completely, then break apart your grain spawn (${fmtVol(V)}) and mix in thoroughly at roughly a 1:1 ratio in a still-air box or flow hood.`,
+        `Seal and incubate in the dark at 21–24°C until fully colonized.`,
+      ];
+    },
+    hygiene: 'Master\'s Mix is nutrient-dense, so it is more contamination-prone — full pressure sterilization and clean-air technique are strongly recommended.'
+  },
+
+  straw: {
+    name: 'Pasteurized Straw',
+    description: 'Classic low-cost bulk substrate, typically for oyster mushrooms. Ratio ≈ 1 part spawn : 4 parts straw by volume.',
+    calc(V) {
+      const strawVol = V * 4;           // chopped straw, loosely packed, mL
+      const strawDryWeight = strawVol * 0.05; // g dry chopped straw
+      const water = strawDryWeight * 3;       // g/mL absorbed during hot-water pasteurization
+      return {
+        ingredients: [
+          { name: 'Chopped wheat/barley straw (dry)', volumeMl: strawVol, weightG: strawDryWeight },
+          { name: 'Water (for hot-water pasteurization bath)', volumeMl: water },
+        ],
+        totalVolume: strawVol,
+        totalWeight: strawDryWeight + water,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Chop or shred the straw into 5–10 cm pieces — about ${fmtVol(r.ingredients[0].volumeMl)} loosely packed (${fmtWeight(r.ingredients[0].weightG)} dry).`,
+        `Submerge the straw in a mesh bag in hot water at 60–70°C for 60–90 minutes to pasteurize (use roughly ${fmtVol(r.ingredients[1].volumeMl)} water, enough to fully submerge).`,
+        `Remove and drain/spin until excess water stops running out — straw should be moist but not dripping.`,
+        `Let cool to room temperature, then break apart your grain spawn (${fmtVol(V)}) and layer it between handfuls of straw in a grow bag (spawn-straw-spawn-straw...).`,
+        `Poke or cut small air holes/slits in the bag, and incubate in the dark at 21–24°C until fully colonized.`,
+      ];
+    },
+    hygiene: 'Straw only needs pasteurization (not full sterilization) since it\'s a low-nutrient substrate — hot water or steam pasteurization is sufficient with clean handling afterward.'
+  },
+
+  manure: {
+    name: 'Composted Manure Substrate',
+    description: 'Rich substrate for button/portobello-type mushrooms. Ratio ≈ 1 part spawn : 6 parts composted substrate by volume.',
+    calc(V) {
+      const manureVol = V * 5;
+      const manureWeight = manureVol * 0.5; // g, moist composted material
+      const gypsumWeight = manureWeight * 0.03;
+      const water = manureWeight * 0.10;
+      return {
+        ingredients: [
+          { name: 'Composted horse manure (moist, ready)', volumeMl: manureVol, weightG: manureWeight },
+          { name: 'Gypsum', weightG: gypsumWeight },
+          { name: 'Water (to fine-tune moisture)', volumeMl: water },
+        ],
+        totalVolume: manureVol,
+        totalWeight: manureWeight + gypsumWeight,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Start with well-composted, aged horse manure (no fresh/hot manure) — about ${fmtVol(r.ingredients[0].volumeMl)} (${fmtWeight(r.ingredients[0].weightG)}).`,
+        `Mix in ${fmtWeight(r.ingredients[1].weightG)} gypsum to improve structure and reduce stickiness.`,
+        `Adjust moisture with up to ${fmtVol(r.ingredients[2].volumeMl)} water until the compost holds together when squeezed but doesn't drip.`,
+        `Pasteurize the compost at 60–65°C for 1–2 hours (tray pasteurization or steam) to kill competitors while preserving beneficial microbes.`,
+        `Let cool to room temperature, then break apart your grain spawn (${fmtVol(V)}) and mix thoroughly into the compost at roughly a 1:6 ratio.`,
+        `Fill trays or tubs, cover with a casing layer once colonized, and incubate at 21–24°C in the dark.`,
+      ];
+    },
+    hygiene: 'Composted manure carries a natural microbial community — pasteurize (not sterilize) to keep the beneficial competitors alive while knocking back pathogens.'
+  },
+};
+
+const select = document.getElementById('substrate');
+for (const [id, s] of Object.entries(SUBSTRATES)) {
+  const opt = document.createElement('option');
+  opt.value = id;
+  opt.textContent = s.name;
+  select.appendChild(opt);
+}
+
+function updateDesc() {
+  document.getElementById('substrateDesc').textContent = SUBSTRATES[select.value].description;
+}
+select.addEventListener('change', updateDesc);
+updateDesc();
+
+function calculate() {
+  const id = select.value;
+  const spawn = parseFloat(document.getElementById('spawn').value);
+  if (!spawn || spawn <= 0) return;
+
+  const substrate = SUBSTRATES[id];
+  const result = substrate.calc(spawn);
+
+  const rows = document.getElementById('ingredientRows');
+  rows.innerHTML = '';
+  result.ingredients.forEach(ing => {
+    const tr = document.createElement('tr');
+    const vol = ing.volumeMl !== undefined ? fmtVol(ing.volumeMl) : '—';
+    const wt = ing.weightG !== undefined ? fmtWeight(ing.weightG) : '—';
+    tr.innerHTML = `<td>${ing.name}</td><td class="num">${vol}</td><td class="num">${wt}</td>`;
+    rows.appendChild(tr);
+  });
+  document.getElementById('totalVol').textContent = fmtVol(result.totalVolume);
+  document.getElementById('totalWeight').textContent = fmtWeight(result.totalWeight);
+
+  const stepsList = document.getElementById('stepsList');
+  stepsList.innerHTML = '';
+  substrate.steps(spawn, result).forEach(step => {
+    const li = document.createElement('li');
+    li.textContent = step;
+    stepsList.appendChild(li);
+  });
+  document.getElementById('hygieneNote').textContent = '⚠ ' + substrate.hygiene;
+
+  document.getElementById('resultsCard').classList.remove('hidden');
+  document.getElementById('stepsCard').classList.remove('hidden');
+}
+
+document.getElementById('calcBtn').addEventListener('click', calculate);
+document.getElementById('spawn').addEventListener('keydown', e => { if (e.key === 'Enter') calculate(); });
+
+calculate();
+</script>
+</body>
+</html>
