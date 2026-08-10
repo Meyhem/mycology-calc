@@ -22,3 +22,7 @@ React + Vite app that builds to a single self-contained `dist/index.html` (via `
 3. Stage and commit `dist/index.html` together with the source changes in the same commit — never commit source changes with a stale `dist/index.html`.
 
 Do not skip the build step even for small changes — a stale `dist/index.html` defeats the purpose of committing it.
+
+## Required workflow: push after every feature/fix
+
+After implementing and committing a feature or fix, push the commit(s) to the remote (`git push`) right away — don't leave finished work sitting unpushed locally.

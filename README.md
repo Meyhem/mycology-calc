@@ -1,3 +1,5 @@
+[Download the latest build (dist/index.html)](https://raw.githubusercontent.com/Meyhem/subcalc/main/dist/index.html)
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
