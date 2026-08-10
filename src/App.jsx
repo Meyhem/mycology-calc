@@ -12,6 +12,7 @@ import GrainTab from './components/GrainTab';
 import LcTab from './components/LcTab';
 import AgarTab from './components/AgarTab';
 import SpeciesTab from './components/SpeciesTab';
+import ConditionsTab from './components/ConditionsTab';
 import YieldTab from './components/YieldTab';
 import DryingTab from './components/DryingTab';
 
@@ -68,6 +69,13 @@ export default function App() {
   // Species guide tab state
   const [speciesId, setSpeciesId] = useState(SPECIES_IDS[0]);
 
+  // Fruiting conditions check tab state
+  const [conditionsSpeciesId, setConditionsSpeciesId] = useState(SPECIES_IDS[0]);
+  const [conditionsTemp, setConditionsTemp] = useState('');
+  const [conditionsHumidity, setConditionsHumidity] = useState('');
+  const [conditionsFae, setConditionsFae] = useState('medium');
+  const [conditionsLight, setConditionsLight] = useState('low');
+
   // Yield estimator tab state
   const [yieldSpeciesId, setYieldSpeciesId] = useState(SPECIES_IDS[0]);
   const [yieldSubstrateId, setYieldSubstrateId] = useState(SUBSTRATE_IDS[0]);
@@ -121,6 +129,9 @@ export default function App() {
   useEffect(() => {
     if (!SPECIES[speciesId]) setSpeciesId(SPECIES_IDS[0]);
   }, [speciesId]);
+  useEffect(() => {
+    if (!SPECIES[conditionsSpeciesId]) setConditionsSpeciesId(SPECIES_IDS[0]);
+  }, [conditionsSpeciesId]);
   useEffect(() => {
     if (!SPECIES[yieldSpeciesId]) setYieldSpeciesId(SPECIES_IDS[0]);
   }, [yieldSpeciesId]);
@@ -254,6 +265,22 @@ export default function App() {
         grainTexts={t.grain}
         speciesId={speciesId}
         setSpeciesId={setSpeciesId}
+      />
+
+      <ConditionsTab
+        active={activeTab === 'conditions'}
+        ui={t.ui}
+        speciesTexts={t.species}
+        speciesId={conditionsSpeciesId}
+        setSpeciesId={setConditionsSpeciesId}
+        temp={conditionsTemp}
+        setTemp={setConditionsTemp}
+        humidity={conditionsHumidity}
+        setHumidity={setConditionsHumidity}
+        fae={conditionsFae}
+        setFae={setConditionsFae}
+        light={conditionsLight}
+        setLight={setConditionsLight}
       />
 
       <YieldTab

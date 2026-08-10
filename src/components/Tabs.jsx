@@ -1,4 +1,4 @@
-const TAB_ORDER = ['substrate', 'grain', 'lc', 'agar', 'species', 'yield', 'drying'];
+const TAB_ORDER = ['substrate', 'grain', 'lc', 'agar', 'species', 'conditions', 'yield', 'drying'];
 
 export default function Tabs({ active, onChange, ui }) {
   const labels = {
@@ -7,6 +7,7 @@ export default function Tabs({ active, onChange, ui }) {
     lc: ui.tabLc,
     agar: ui.tabAgar,
     species: ui.tabSpecies,
+    conditions: ui.tabConditions,
     yield: ui.tabYield,
     drying: ui.tabDrying,
   };
@@ -16,6 +17,7 @@ export default function Tabs({ active, onChange, ui }) {
     lc: 'tabBtnLc',
     agar: 'tabBtnAgar',
     species: 'tabBtnSpecies',
+    conditions: 'tabBtnConditions',
     yield: 'tabBtnYield',
     drying: 'tabBtnDrying',
   };
