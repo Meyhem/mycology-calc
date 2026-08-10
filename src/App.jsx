@@ -1,25 +1,50 @@
 import { useEffect, useMemo, useState } from 'react';
 import { SUBSTRATES, LC_RECIPES, AGAR_RECIPES } from './data/recipes';
+import { GRAIN_RECIPES } from './data/grain';
+import { SPECIES } from './data/species';
 import { I18N } from './data/i18n';
 import LanguageSwitch from './components/LanguageSwitch';
+import UnitSwitch from './components/UnitSwitch';
+import ThemeSwitch from './components/ThemeSwitch';
 import Tabs from './components/Tabs';
 import SubstrateTab from './components/SubstrateTab';
+import GrainTab from './components/GrainTab';
 import LcTab from './components/LcTab';
 import AgarTab from './components/AgarTab';
+import SpeciesTab from './components/SpeciesTab';
+import YieldTab from './components/YieldTab';
+import SterilizeTab from './components/SterilizeTab';
+import DryingTab from './components/DryingTab';
 
 const LANG_KEY = 'subcalc_lang';
+const UNIT_KEY = 'subcalc_unit';
+const THEME_KEY = 'subcalc_theme';
 
 const SUBSTRATE_IDS = Object.keys(SUBSTRATES);
 const LC_IDS = Object.keys(LC_RECIPES);
 const AGAR_IDS = Object.keys(AGAR_RECIPES);
+const GRAIN_IDS = Object.keys(GRAIN_RECIPES);
+const SPECIES_IDS = Object.keys(SPECIES);
 
 function readInitialLang() {
   if (typeof window === 'undefined') return 'en';
   return localStorage.getItem(LANG_KEY) || 'en';
 }
 
+function readInitialUnit() {
+  if (typeof window === 'undefined') return 'metric';
+  return localStorage.getItem(UNIT_KEY) || 'metric';
+}
+
+function readInitialTheme() {
+  if (typeof window === 'undefined') return 'auto';
+  return localStorage.getItem(THEME_KEY) || 'auto';
+}
+
 export default function App() {
   const [lang, setLang] = useState(readInitialLang);
+  const [unit, setUnit] = useState(readInitialUnit);
+  const [theme, setTheme] = useState(readInitialTheme);
   const [activeTab, setActiveTab] = useState('substrate');
 
   // Substrate tab state
@@ -36,6 +61,31 @@ export default function App() {
   const [agarPlateVol, setAgarPlateVol] = useState(25);
   const [agarPlateCount, setAgarPlateCount] = useState(10);
 
+  // Grain spawn tab state
+  const [grainId, setGrainId] = useState(GRAIN_IDS[0]);
+  const [grainJarVol, setGrainJarVol] = useState(350);
+  const [grainJarCount, setGrainJarCount] = useState(6);
+
+  // Species guide tab state
+  const [speciesId, setSpeciesId] = useState(SPECIES_IDS[0]);
+
+  // Yield estimator tab state
+  const [yieldSpeciesId, setYieldSpeciesId] = useState(SPECIES_IDS[0]);
+  const [yieldSubstrateId, setYieldSubstrateId] = useState(SUBSTRATE_IDS[0]);
+  const [yieldWetWeight, setYieldWetWeight] = useState(3000);
+
+  // Sterilization helper tab state
+  const [pcContainerId, setPcContainerId] = useState('quart');
+  const [pcJarCount, setPcJarCount] = useState(6);
+  const [pcAltitude, setPcAltitude] = useState(0);
+  const [dilutionTargetVol, setDilutionTargetVol] = useState(500);
+  const [dilutionTargetConc, setDilutionTargetConc] = useState(10);
+  const [dilutionStockConc, setDilutionStockConc] = useState(70);
+
+  // Drying helper tab state
+  const [dryingSpeciesId, setDryingSpeciesId] = useState(SPECIES_IDS[0]);
+  const [dryingThickness, setDryingThickness] = useState('medium');
+
   const t = I18N[lang];
 
   useEffect(() => {
@@ -43,6 +93,25 @@ export default function App() {
     document.documentElement.lang = lang;
     document.title = t.ui.pageTitle.replace(/^\S+\s/, '');
   }, [lang, t]);
+
+  useEffect(() => {
+    localStorage.setItem(UNIT_KEY, unit);
+  }, [unit]);
+
+  useEffect(() => {
+    localStorage.setItem(THEME_KEY, theme);
+    const apply = () => {
+      const effective = theme === 'auto'
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : theme;
+      document.documentElement.dataset.theme = effective;
+    };
+    apply();
+    if (theme !== 'auto') return;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, [theme]);
 
   // Keep selected recipe ids valid if the data set ever changes (defensive, mirrors original behaviour
   // where populateSelect() preserves the previous value if still present).
@@ -55,6 +124,18 @@ export default function App() {
   useEffect(() => {
     if (!AGAR_RECIPES[agarId]) setAgarId(AGAR_IDS[0]);
   }, [agarId]);
+  useEffect(() => {
+    if (!GRAIN_RECIPES[grainId]) setGrainId(GRAIN_IDS[0]);
+  }, [grainId]);
+  useEffect(() => {
+    if (!SPECIES[speciesId]) setSpeciesId(SPECIES_IDS[0]);
+  }, [speciesId]);
+  useEffect(() => {
+    if (!SPECIES[yieldSpeciesId]) setYieldSpeciesId(SPECIES_IDS[0]);
+  }, [yieldSpeciesId]);
+  useEffect(() => {
+    if (!SPECIES[dryingSpeciesId]) setDryingSpeciesId(SPECIES_IDS[0]);
+  }, [dryingSpeciesId]);
 
   const substrateResult = useMemo(() => {
     const spawnNum = parseFloat(spawn);
@@ -86,12 +167,33 @@ export default function App() {
     return AGAR_RECIPES[agarId].calc(agarTotalVolume);
   }, [agarId, agarTotalVolume]);
 
+  const grainTotalVolume = useMemo(() => {
+    const jarVolNum = parseFloat(grainJarVol);
+    const jarCountNum = parseFloat(grainJarCount);
+    if (!jarVolNum || jarVolNum <= 0 || !jarCountNum || jarCountNum <= 0) return null;
+    return jarVolNum * jarCountNum;
+  }, [grainJarVol, grainJarCount]);
+
+  const grainResult = useMemo(() => {
+    if (grainTotalVolume === null) return null;
+    return GRAIN_RECIPES[grainId].calc(grainTotalVolume);
+  }, [grainId, grainTotalVolume]);
+
   return (
     <div className="wrap">
       <header>
         <h1 id="pageTitle">{t.ui.pageTitle}</h1>
         <p id="pageSubtitle">{t.ui.pageSubtitle}</p>
-        <LanguageSwitch lang={lang} onChange={setLang} label={t.ui.langLabel} />
+        <div className="header-controls">
+          <LanguageSwitch lang={lang} onChange={setLang} label={t.ui.langLabel} />
+          <UnitSwitch unit={unit} onChange={setUnit} label={t.ui.unitLabel} />
+          <ThemeSwitch
+            theme={theme}
+            onChange={setTheme}
+            label={t.ui.themeLabel}
+            options={{ auto: t.ui.themeAuto, light: t.ui.themeLight, dark: t.ui.themeDark }}
+          />
+        </div>
       </header>
 
       <Tabs active={activeTab} onChange={setActiveTab} ui={t.ui} />
@@ -105,6 +207,7 @@ export default function App() {
         spawn={spawn}
         setSpawn={setSpawn}
         result={substrateResult}
+        unit={unit}
       />
 
       <LcTab
@@ -119,6 +222,7 @@ export default function App() {
         setJarCount={setLcJarCount}
         result={lcResult}
         totalVolume={lcTotalVolume}
+        unit={unit}
       />
 
       <AgarTab
@@ -133,6 +237,74 @@ export default function App() {
         setPlateCount={setAgarPlateCount}
         result={agarResult}
         totalVolume={agarTotalVolume}
+        unit={unit}
+      />
+
+      <GrainTab
+        active={activeTab === 'grain'}
+        ui={t.ui}
+        texts={t.grain}
+        grainId={grainId}
+        setGrainId={setGrainId}
+        jarVol={grainJarVol}
+        setJarVol={setGrainJarVol}
+        jarCount={grainJarCount}
+        setJarCount={setGrainJarCount}
+        result={grainResult}
+        totalVolume={grainTotalVolume}
+        unit={unit}
+      />
+
+      <SpeciesTab
+        active={activeTab === 'species'}
+        ui={t.ui}
+        texts={t.species}
+        substrateTexts={t.substrates}
+        grainTexts={t.grain}
+        speciesId={speciesId}
+        setSpeciesId={setSpeciesId}
+      />
+
+      <YieldTab
+        active={activeTab === 'yield'}
+        ui={t.ui}
+        speciesTexts={t.species}
+        substrateTexts={t.substrates}
+        speciesId={yieldSpeciesId}
+        setSpeciesId={setYieldSpeciesId}
+        substrateId={yieldSubstrateId}
+        setSubstrateId={setYieldSubstrateId}
+        wetWeight={yieldWetWeight}
+        setWetWeight={setYieldWetWeight}
+        unit={unit}
+      />
+
+      <SterilizeTab
+        active={activeTab === 'sterilize'}
+        ui={t.ui}
+        containerId={pcContainerId}
+        setContainerId={setPcContainerId}
+        jarCount={pcJarCount}
+        setJarCount={setPcJarCount}
+        altitude={pcAltitude}
+        setAltitude={setPcAltitude}
+        dilutionTargetVol={dilutionTargetVol}
+        setDilutionTargetVol={setDilutionTargetVol}
+        dilutionTargetConc={dilutionTargetConc}
+        setDilutionTargetConc={setDilutionTargetConc}
+        dilutionStockConc={dilutionStockConc}
+        setDilutionStockConc={setDilutionStockConc}
+        unit={unit}
+      />
+
+      <DryingTab
+        active={activeTab === 'drying'}
+        ui={t.ui}
+        speciesTexts={t.species}
+        speciesId={dryingSpeciesId}
+        setSpeciesId={setDryingSpeciesId}
+        thickness={dryingThickness}
+        setThickness={setDryingThickness}
       />
     </div>
   );

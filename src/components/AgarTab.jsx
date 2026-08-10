@@ -16,6 +16,7 @@ export default function AgarTab({
   setPlateCount,
   result,
   totalVolume,
+  unit,
 }) {
   const t = texts[agarId];
   const r = AGAR_RECIPES[agarId];
@@ -77,6 +78,9 @@ export default function AgarTab({
         totalVolSuffix={result ? `${plateCount} ${ui.platesWord}` : undefined}
         footnoteId="agarFootnote"
         footnote={ui.agarFootnote}
+        unit={unit}
+        copyLabel={ui.copyBtn}
+        copiedLabel={ui.copiedBtn}
       />
 
       <StepsList
@@ -89,6 +93,7 @@ export default function AgarTab({
         result={result}
         hygieneId="agarHygieneNote"
         hygiene={t.hygiene}
+        unit={unit}
       />
     </div>
   );

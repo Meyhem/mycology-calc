@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { fmtVol, fmtWeight } from '../lib/format';
 
 export default function ResultsTable({
@@ -20,7 +21,27 @@ export default function ResultsTable({
   totalVolSuffix,
   footnoteId,
   footnote,
+  unit = 'metric',
+  copyLabel,
+  copiedLabel,
 }) {
+  const [copied, setCopied] = useState(false);
+
+  function handleCopy() {
+    if (!result) return;
+    const lines = result.ingredients.map((ing, i) => {
+      const parts = [];
+      if (ing.volumeMl !== undefined) parts.push(fmtVol(ing.volumeMl, unit));
+      if (ing.weightG !== undefined) parts.push(fmtWeight(ing.weightG, unit));
+      return `- ${names[i]}: ${parts.join(' / ')}`;
+    });
+    const text = [header, ...lines, `${totalLabel}: ${fmtVol(result.totalVolume, unit)}, ${fmtWeight(result.totalWeight, unit)}`].join('\n');
+    navigator.clipboard?.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
   return (
     <div className={'card' + (result ? '' : ' hidden')} id={cardId}>
       <h2 id={headerId}>{header}</h2>
@@ -36,8 +57,8 @@ export default function ResultsTable({
           {result && result.ingredients.map((ing, i) => (
             <tr key={i}>
               <td>{names[i]}</td>
-              <td className="num">{ing.volumeMl !== undefined ? fmtVol(ing.volumeMl) : '—'}</td>
-              <td className="num">{ing.weightG !== undefined ? fmtWeight(ing.weightG) : '—'}</td>
+              <td className="num">{ing.volumeMl !== undefined ? fmtVol(ing.volumeMl, unit) : '—'}</td>
+              <td className="num">{ing.weightG !== undefined ? fmtWeight(ing.weightG, unit) : '—'}</td>
             </tr>
           ))}
         </tbody>
@@ -45,13 +66,18 @@ export default function ResultsTable({
           <tr>
             <td id={totalLabelId}>{totalLabel}</td>
             <td className="num" id={totalVolId}>
-              {result ? fmtVol(result.totalVolume) + (totalVolSuffix ? ` (${totalVolSuffix})` : '') : '—'}
+              {result ? fmtVol(result.totalVolume, unit) + (totalVolSuffix ? ` (${totalVolSuffix})` : '') : '—'}
             </td>
-            <td className="num" id={totalWeightId}>{result ? fmtWeight(result.totalWeight) : ''}</td>
+            <td className="num" id={totalWeightId}>{result ? fmtWeight(result.totalWeight, unit) : ''}</td>
           </tr>
         </tfoot>
       </table>
       <div className="footnote" id={footnoteId}>{footnote}</div>
+      {result && (
+        <button className="copy-btn" type="button" onClick={handleCopy}>
+          {copied ? copiedLabel : copyLabel}
+        </button>
+      )}
     </div>
   );
 }

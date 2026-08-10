@@ -16,6 +16,7 @@ export default function LcTab({
   setJarCount,
   result,
   totalVolume,
+  unit,
 }) {
   const t = texts[lcId];
   const r = LC_RECIPES[lcId];
@@ -77,6 +78,9 @@ export default function LcTab({
         totalVolSuffix={result ? `${jarCount} ${ui.jarsWord}` : undefined}
         footnoteId="lcFootnote"
         footnote={ui.lcFootnote}
+        unit={unit}
+        copyLabel={ui.copyBtn}
+        copiedLabel={ui.copiedBtn}
       />
 
       <StepsList
@@ -89,6 +93,7 @@ export default function LcTab({
         result={result}
         hygieneId="lcHygieneNote"
         hygiene={t.hygiene}
+        unit={unit}
       />
     </div>
   );

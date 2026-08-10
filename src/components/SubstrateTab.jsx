@@ -4,7 +4,7 @@ import ResultsTable from './ResultsTable';
 import StepsList from './StepsList';
 import { SUBSTRATES } from '../data/recipes';
 
-export default function SubstrateTab({ active, ui, texts, substrateId, setSubstrateId, spawn, setSpawn, result }) {
+export default function SubstrateTab({ active, ui, texts, substrateId, setSubstrateId, spawn, setSpawn, result, unit }) {
   const t = texts[substrateId];
   const s = SUBSTRATES[substrateId];
 
@@ -51,6 +51,9 @@ export default function SubstrateTab({ active, ui, texts, substrateId, setSubstr
         totalWeightId="totalWeight"
         footnoteId="substrateFootnote"
         footnote={ui.substrateFootnote}
+        unit={unit}
+        copyLabel={ui.copyBtn}
+        copiedLabel={ui.copiedBtn}
       />
 
       <StepsList
@@ -63,6 +66,7 @@ export default function SubstrateTab({ active, ui, texts, substrateId, setSubstr
         result={result}
         hygieneId="hygieneNote"
         hygiene={t.hygiene}
+        unit={unit}
       />
     </div>
   );
