@@ -620,6 +620,36 @@ export const I18N = {
         description: 'The supermarket mushroom — needs composted manure substrate topped with a casing layer of soil-like material to pin, unlike the wood-lovers above.',
         ratingNote: 'Good — very rewarding once you have compost and casing technique down, but the most technically involved species to start from scratch at home.',
       },
+      turkeyTail: {
+        name: 'Turkey Tail (Trametes versicolor)',
+        description: 'A thin, colorful wood-decay polypore grown for its medicinal extract value rather than as a table mushroom — needs light to develop its banded, fan-shaped caps.',
+        ratingNote: 'Very good — hardy and contamination-resistant on hardwood substrate, but slow and grown for one substantial flush rather than eaten fresh.',
+      },
+      chestnut: {
+        name: 'Chestnut Mushroom (Pholiota adiposa)',
+        description: 'A clustering, nutty-flavored wood-lover with a firm texture that holds up well in cooking — less common than oyster or shiitake but similarly straightforward to grow.',
+        ratingNote: 'Good — reliable clustering flushes on supplemented sawdust, though colonization is a bit slower than the oyster family.',
+      },
+      enoki: {
+        name: 'Enoki (Flammulina velutipes)',
+        description: 'Grown cold, dark, and starved of fresh air to produce the long, pale, thin-stemmed clusters familiar from the supermarket — very different technique from most gourmet species.',
+        ratingNote: 'Fair — biologically easy to colonize, but getting the classic long-stem look requires a cold fruiting chamber and a collar to force upward growth, which trips up beginners.',
+      },
+      cordyceps: {
+        name: 'Cordyceps militaris',
+        description: 'An orange, club-shaped species fruited directly from a colonized grain or rice jar rather than a bulk substrate tub — prized for its supplement/nutraceutical use.',
+        ratingNote: 'Fair — straightforward to colonize but needs a defined light cycle and cooler fruiting temperatures to trigger good color and fruit body density.',
+      },
+      maitake: {
+        name: 'Maitake / Hen of the Woods (Grifola frondosa)',
+        description: 'A prized, richly flavored polypore that forms a single dense rosette of overlapping caps rather than distinct mushrooms — notoriously particular about fruiting conditions.',
+        ratingNote: 'Fair — very rewarding when it works, but pinning is inconsistent and often benefits from a soil/casing contact layer that other species here don\'t need.',
+      },
+      morel: {
+        name: 'Morel (Morchella spp.)',
+        description: 'A prized wild-style species with a honeycombed cap, normally grown outdoors in nutrient-bag beds rather than indoor tubs — among the hardest mushrooms to fruit reliably at home.',
+        ratingNote: 'Poor for beginners — even experienced growers see inconsistent, low pinning rates; treat any harvest as a bonus rather than a guarantee.',
+      },
     },
   },
   sk: {
@@ -1242,6 +1272,36 @@ export const I18N = {
         name: 'Pečiarka dvojvýtrusná / Portobello (Agaricus bisporus)',
         description: 'Supermarketová huba — na rozdiel od drevomilných druhov vyššie potrebuje kompostovaný hnojový substrát prekrytý krycou vrstvou zeminy, aby vytvorila zárodky.',
         ratingNote: 'Dobré — veľmi vďačný druh, keď zvládnete kompost a krycí materiál, ale technicky najnáročnejší druh na začatie doma od nuly.',
+      },
+      turkeyTail: {
+        name: 'Outkovka pestrá (Trametes versicolor)',
+        description: 'Tenká, farebná drevokazná choroška pestovaná skôr pre liečivý extrakt než ako stolová huba — na vytvorenie pásikavých, vejárovitých klobúkov potrebuje svetlo.',
+        ratingNote: 'Veľmi dobré — odolná voči kontaminácii na tvrdom dreve, ale pomalá a pestuje sa skôr na jednu väčšiu vlnu než na čerstvú konzumáciu.',
+      },
+      chestnut: {
+        name: 'Šupinovka gaštanová (Pholiota adiposa)',
+        description: 'Trsnatá, orieškovej chuti drevomilná huba s pevnou textúrou, ktorá dobre znáša tepelnú úpravu — menej bežná ako hliva či shiitake, no pestuje sa podobne priamočiaro.',
+        ratingNote: 'Dobré — spoľahlivé trsnaté vlny na doplnených pilinách, kolonizácia je však o niečo pomalšia ako pri hlivách.',
+      },
+      enoki: {
+        name: 'Zimník sametonohý / Enoki (Flammulina velutipes)',
+        description: 'Pestuje sa v chlade, tme a pri obmedzenej výmene vzduchu, aby vznikli dlhé, bledé, tenké stopky známe zo supermarketu — postup výrazne odlišný od väčšiny gurmánskych druhov.',
+        ratingNote: 'Priemerné — biologicky sa ľahko kolonizuje, no na dosiahnutie klasického dlhého tvaru je potrebná chladná plodiaca komora a golier, čo začiatočníkov často zaskočí.',
+      },
+      cordyceps: {
+        name: 'Kordyceps vojenský (Cordyceps militaris)',
+        description: 'Oranžový, paličkovitý druh, ktorý plodí priamo z pretraseného pohára zrna alebo ryže bez klasického objemového substrátu — cenený pre doplnkové/nutraceutické využitie.',
+        ratingNote: 'Priemerné — kolonizácia je nenáročná, no na dobrú farbu a hustotu plodníc potrebuje presný svetelný cyklus a chladnejšie plodenie.',
+      },
+      maitake: {
+        name: 'Trsnatec lupeňovitý / Maitake (Grifola frondosa)',
+        description: 'Cenená, výrazne chutná choroška, ktorá namiesto samostatných húb tvorí jednu hustú ružicu prekrývajúcich sa klobúkov — povestne náročná na podmienky plodenia.',
+        ratingNote: 'Priemerné — keď sa podarí, je veľmi vďačná, no tvorba zárodkov je nekonzistentná a často pomáha krycia vrstva zeminy, ktorú ostatné druhy tu nepotrebujú.',
+      },
+      morel: {
+        name: 'Smrž (Morchella spp.)',
+        description: 'Cenený druh s medovníkovitým klobúkom, ktorý sa bežne pestuje vonku v záhonoch s výživovými vreckami, nie v boxoch vo vnútri — patrí medzi najťažšie huby na spoľahlivé doplodenie doma.',
+        ratingNote: 'Slabé pre začiatočníkov — aj skúsení pestovatelia majú nekonzistentnú, nízku mieru tvorby zárodkov; akúkoľvek úrodu berte ako bonus, nie istotu.',
       },
     },
   },
