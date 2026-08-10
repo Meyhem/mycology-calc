@@ -129,6 +129,7 @@
   <div class="tabs">
     <button class="tab-btn active" data-tab="substrate">Substrate Calculator</button>
     <button class="tab-btn" data-tab="lc">Liquid Culture Calculator</button>
+    <button class="tab-btn" data-tab="agar">Agar Plates</button>
   </div>
 
   <!-- ===================== SUBSTRATE TAB ===================== -->
@@ -208,6 +209,49 @@
       <h2>Preparation steps</h2>
       <ol class="steps" id="lcStepsList"></ol>
       <div class="badge" id="lcHygieneNote"></div>
+    </div>
+  </div>
+
+  <!-- ===================== AGAR PLATES TAB ===================== -->
+  <div class="tab-panel" id="tab-agar">
+    <div class="card">
+      <div class="field">
+        <label for="agarRecipe">Agar recipe</label>
+        <select id="agarRecipe"></select>
+        <div class="desc" id="agarDesc"></div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="agarPlateVol">Media per plate (mL)</label>
+          <input type="number" id="agarPlateVol" value="25" min="1" step="5">
+        </div>
+        <div class="field">
+          <label for="agarPlateCount">Number of plates</label>
+          <input type="number" id="agarPlateCount" value="10" min="1" step="1">
+        </div>
+      </div>
+      <div class="desc">A standard 90 mm petri dish takes about 20–25 mL of media. A 10% extra batch volume is included automatically to cover pouring loss.</div>
+      <button class="primary" id="agarCalcBtn">Calculate recipe</button>
+    </div>
+
+    <div class="card hidden" id="agarResultsCard">
+      <h2>Ingredients (total, incl. 10% pour loss)</h2>
+      <table>
+        <thead>
+          <tr><th>Ingredient</th><th class="num">Volume</th><th class="num">Weight</th></tr>
+        </thead>
+        <tbody id="agarIngredientRows"></tbody>
+        <tfoot>
+          <tr><td>Total media</td><td class="num" id="agarTotalVol">—</td><td class="num" id="agarTotalWeight"></td></tr>
+        </tfoot>
+      </table>
+      <div class="footnote">Agar concentration is ~2% (20 g/L), the standard firmness for mushroom culture work. Nutrient concentrations are approximate — adjust to taste/experience.</div>
+    </div>
+
+    <div class="card hidden" id="agarStepsCard">
+      <h2>Preparation steps</h2>
+      <ol class="steps" id="agarStepsList"></ol>
+      <div class="badge" id="agarHygieneNote"></div>
     </div>
   </div>
 </div>
@@ -500,6 +544,33 @@ const LC_RECIPES = {
     hygiene: 'Discard any jar showing uneven cloudiness, odd colors, or bad smell — signs of bacterial or mold contamination.'
   },
 
+  dextrose: {
+    name: 'Dextrose Syrup — 4%',
+    description: 'Pure simple-sugar LC using dextrose (glucose) powder — very consistent, no boiling required to dissolve.',
+    calc(V) {
+      const dextrose = V * 0.04;
+      return {
+        ingredients: [
+          { name: 'Dextrose (glucose) powder', weightG: dextrose },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: dextrose + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Stir ${fmtWeight(r.ingredients[0].weightG)} dextrose powder into warm water until fully dissolved (dissolves easily, no heavy heating needed).`,
+        `Top up with remaining water to reach ${fmtVol(V)} total.`,
+        `Distribute into jars, filling each to 70–80% capacity. Fit lids with self-healing injection ports and micron filter.`,
+        `Pressure sterilize at 15 psi (121°C) for 20–25 minutes, then cool completely.`,
+        `Inject spore solution or liquid culture (1–2 mL per jar) in a still-air box or flow hood.`,
+        `Incubate at 21–27°C, swirling every day or two, until fluffy white mycelium growth appears (3–10 days).`,
+      ];
+    },
+    hygiene: 'Dextrose solution is very clean-tasting to mycelium but also to contaminants — sterilize thoroughly and inoculate with clean technique.'
+  },
+
   potatodextrose: {
     name: 'Potato Dextrose Liquid — 20% potato / 2% dextrose',
     description: 'Closer to PDA nutrient profile; a good option if you already work with potato-based media.',
@@ -584,8 +655,186 @@ document.getElementById('lcCalcBtn').addEventListener('click', calculateLc);
   document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') calculateLc(); });
 });
 
+/* ---------------------------------------------------------------- */
+/* Agar plate calculator                                             */
+/* ---------------------------------------------------------------- */
+const AGAR_RECIPES = {
+  mea: {
+    name: 'Malt Extract Agar (MEA)',
+    description: 'The most popular homemade agar for mushroom culture work — gentle nutrient level, easy to pour and read.',
+    calc(V) {
+      const lme = V * 0.02;   // 2% w/v
+      const agar = V * 0.02;  // 2% w/v
+      return {
+        ingredients: [
+          { name: 'Light malt extract (LME)', weightG: lme },
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: lme + agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Combine ${fmtWeight(r.ingredients[0].weightG)} light malt extract and ${fmtWeight(r.ingredients[1].weightG)} agar-agar powder with the water (${fmtVol(V)} total) in a heat-safe flask or jar.`,
+        `Stir, then heat/boil for 1–2 minutes while stirring until the agar fully dissolves (liquid turns clear, no gritty powder left).`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid) — do not let it fully set in the container.`,
+        `In a still-air box or flow hood, pour a thin layer (about 20–25 mL per standard 90 mm dish) into sterile petri dishes, swirling gently to cover the base.`,
+        `Leave lids slightly ajar until the agar sets and cools, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'Wipe down your work surface with isopropyl alcohol before pouring, and pour quickly once dishes are opened to minimize airborne contamination exposure.'
+  },
+
+  pda: {
+    name: 'Potato Dextrose Agar (PDA)',
+    description: 'Classic mycology standard, made from a real potato infusion — great for observing mycelium characteristics.',
+    calc(V) {
+      const potato = V * 0.2;   // 200 g/L potato infusion
+      const dextrose = V * 0.02; // 2% dextrose
+      const agar = V * 0.02;     // 2% agar
+      return {
+        ingredients: [
+          { name: 'Peeled potato (diced)', weightG: potato },
+          { name: 'Dextrose (glucose)', weightG: dextrose },
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Water (for boiling + topping to volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: potato + dextrose + agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Peel and dice ${fmtWeight(r.ingredients[0].weightG)} potato, then boil in most of the water for 20–30 minutes until soft.`,
+        `Strain out the solids, keeping only the potato infusion liquid. Top up with water back to ${fmtVol(V)} total.`,
+        `While still hot, stir in ${fmtWeight(r.ingredients[1].weightG)} dextrose and ${fmtWeight(r.ingredients[2].weightG)} agar-agar powder. Bring to a gentle boil for 1–2 minutes, stirring, until agar fully dissolves.`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'PDA is nutrient-rich, making it more prone to bacterial contamination — sterilize thoroughly and pour with very clean technique.'
+  },
+
+  mya: {
+    name: 'Malt Yeast Agar (MYA)',
+    description: 'MEA boosted with a small amount of nutritional/brewer\'s yeast for slightly faster, more vigorous mycelium growth.',
+    calc(V) {
+      const lme = V * 0.02;
+      const yeast = V * 0.002; // 0.2% w/v
+      const agar = V * 0.02;
+      return {
+        ingredients: [
+          { name: 'Light malt extract (LME)', weightG: lme },
+          { name: 'Nutritional/brewer\'s yeast', weightG: yeast },
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: lme + yeast + agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Combine ${fmtWeight(r.ingredients[0].weightG)} light malt extract, ${fmtWeight(r.ingredients[1].weightG)} nutritional yeast, and ${fmtWeight(r.ingredients[2].weightG)} agar-agar powder with the water (${fmtVol(V)} total).`,
+        `Stir, then heat/boil for 1–2 minutes while stirring until the agar fully dissolves.`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'The added yeast makes this a richer medium — keep pours quick and your work area freshly sanitized to avoid contamination.'
+  },
+
+  honeyagar: {
+    name: 'Honey Agar',
+    description: 'Pantry-ingredient agar using raw honey instead of malt extract — a simple option if LME isn\'t on hand.',
+    calc(V) {
+      const honey = V * 0.04; // 4% w/v (honey is less concentrated in sugars than LME)
+      const agar = V * 0.02;
+      return {
+        ingredients: [
+          { name: 'Raw honey', weightG: honey },
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: honey + agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Dissolve ${fmtWeight(r.ingredients[1].weightG)} agar-agar powder into the water (${fmtVol(V)} total) and bring to a boil for 1–2 minutes, stirring, until fully dissolved.`,
+        `Remove from heat and stir in ${fmtWeight(r.ingredients[0].weightG)} raw honey until dissolved.`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'Honey can slightly soften agar over time — use plates within a few weeks and store cold. Sterilize thoroughly as with any sugar-based media.'
+  },
+};
+
+const agarSelect = document.getElementById('agarRecipe');
+for (const [id, r] of Object.entries(AGAR_RECIPES)) {
+  const opt = document.createElement('option');
+  opt.value = id;
+  opt.textContent = r.name;
+  agarSelect.appendChild(opt);
+}
+
+function updateAgarDesc() {
+  document.getElementById('agarDesc').textContent = AGAR_RECIPES[agarSelect.value].description;
+}
+agarSelect.addEventListener('change', updateAgarDesc);
+updateAgarDesc();
+
+function calculateAgar() {
+  const id = agarSelect.value;
+  const plateVol = parseFloat(document.getElementById('agarPlateVol').value);
+  const plateCount = parseFloat(document.getElementById('agarPlateCount').value);
+  if (!plateVol || plateVol <= 0 || !plateCount || plateCount <= 0) return;
+
+  const totalVolume = plateVol * plateCount * 1.1; // +10% pour-loss buffer
+  const recipe = AGAR_RECIPES[id];
+  const result = recipe.calc(totalVolume);
+
+  const rows = document.getElementById('agarIngredientRows');
+  rows.innerHTML = '';
+  result.ingredients.forEach(ing => {
+    const tr = document.createElement('tr');
+    const vol = ing.volumeMl !== undefined ? fmtVol(ing.volumeMl) : '—';
+    const wt = ing.weightG !== undefined ? fmtWeight(ing.weightG) : '—';
+    tr.innerHTML = `<td>${ing.name}</td><td class="num">${vol}</td><td class="num">${wt}</td>`;
+    rows.appendChild(tr);
+  });
+  document.getElementById('agarTotalVol').textContent = fmtVol(result.totalVolume) + ` (${plateCount} plates)`;
+  document.getElementById('agarTotalWeight').textContent = fmtWeight(result.totalWeight);
+
+  const stepsList = document.getElementById('agarStepsList');
+  stepsList.innerHTML = '';
+  recipe.steps(totalVolume, result).forEach(step => {
+    const li = document.createElement('li');
+    li.textContent = step;
+    stepsList.appendChild(li);
+  });
+  document.getElementById('agarHygieneNote').textContent = '⚠ ' + recipe.hygiene;
+
+  document.getElementById('agarResultsCard').classList.remove('hidden');
+  document.getElementById('agarStepsCard').classList.remove('hidden');
+}
+
+document.getElementById('agarCalcBtn').addEventListener('click', calculateAgar);
+['agarPlateVol', 'agarPlateCount'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') calculateAgar(); });
+});
+
 calculateSubstrate();
 calculateLc();
+calculateAgar();
 </script>
 </body>
 </html>
