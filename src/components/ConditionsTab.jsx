@@ -13,6 +13,17 @@ function StatusPill({ ok, label }) {
   return <span className={'status-pill ' + (ok ? 'status-ok' : 'status-bad')}>{label}</span>;
 }
 
+const FAE_LEVEL_KEY = { low: 'conditionsFaeLevelLow', medium: 'conditionsFaeLevelMedium', high: 'conditionsFaeLevelHigh' };
+const LIGHT_LEVEL_KEY = { none: 'conditionsLightLevelNone', low: 'conditionsLightLevelLow', medium: 'conditionsLightLevelMedium' };
+
+function OptimalPill({ label, value }) {
+  return (
+    <span className="status-pill status-ok optimal-pill">
+      <span className="optimal-pill-label">{label}</span> {value}
+    </span>
+  );
+}
+
 export default function ConditionsTab({
   active,
   ui,
@@ -125,6 +136,16 @@ export default function ConditionsTab({
           <div className="status-row">
             <span className="k">{ui.conditionsLightResultLabel}</span>
             <StatusPill ok={lightOk} label={lightOk ? ui.conditionsStatusOk : ui.conditionsStatusLowLight} />
+          </div>
+        </div>
+
+        <div className="field">
+          <div className="optimal-title">{ui.conditionsOptimalTitle} {speciesTexts[speciesId].name}</div>
+          <div className="optimal-pills">
+            <OptimalPill label={ui.conditionsOptimalTempPill} value={`${s.fruitTempC[0]}–${s.fruitTempC[1]} °C`} />
+            <OptimalPill label={ui.conditionsOptimalHumidityPill} value={`${s.fruitHumidityPct[0]}–${s.fruitHumidityPct[1]} %`} />
+            <OptimalPill label={ui.conditionsFaeResultLabel} value={ui[FAE_LEVEL_KEY[s.faeLevel]]} />
+            <OptimalPill label={ui.conditionsLightResultLabel} value={ui[LIGHT_LEVEL_KEY[s.lightLevel]]} />
           </div>
         </div>
 

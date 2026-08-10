@@ -206,6 +206,11 @@
   .status-ok { background: var(--ok-bg); border: 1px solid var(--ok-border); color: var(--ok-ink); }
   .status-bad { background: var(--bad-bg); border: 1px solid var(--bad-border); color: var(--bad-ink); }
 
+  .optimal-title { font-size: 0.88rem; color: var(--muted); margin-bottom: 10px; }
+  .optimal-pills { display: flex; flex-wrap: wrap; gap: 10px 12px; }
+  .optimal-pill { padding: 5px 12px; }
+  .optimal-pill-label { opacity: 0.75; margin-right: 2px; }
+
   .overall-banner { margin-top: 4px; padding: 12px 14px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; }
   .overall-banner.ok { background: var(--ok-bg); border: 1px solid var(--ok-border); color: var(--ok-ink); }
   .overall-banner.issues { background: var(--warn-bg); border: 1px solid var(--warn-border); color: #7a5c00; }
