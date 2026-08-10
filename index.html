@@ -273,6 +273,9 @@ function fmtWeight(g) {
   if (g >= 1000) return (g/1000).toFixed(2).replace(/\.00$/,'') + ' kg';
   return Math.round(g) + ' g';
 }
+function starsText(stars) {
+  return '★'.repeat(stars) + '☆'.repeat(5 - stars);
+}
 function renderRating(elId, rating) {
   const filled = '★'.repeat(rating.stars);
   const empty = '☆'.repeat(5 - rating.stars);
@@ -518,7 +521,7 @@ const substrateSelect = document.getElementById('substrate');
 for (const [id, s] of Object.entries(SUBSTRATES)) {
   const opt = document.createElement('option');
   opt.value = id;
-  opt.textContent = s.name;
+  opt.textContent = `${starsText(s.rating.stars)} ${s.name}`;
   substrateSelect.appendChild(opt);
 }
 
@@ -805,7 +808,7 @@ const lcSelect = document.getElementById('lcRecipe');
 for (const [id, r] of Object.entries(LC_RECIPES)) {
   const opt = document.createElement('option');
   opt.value = id;
-  opt.textContent = r.name;
+  opt.textContent = `${starsText(r.rating.stars)} ${r.name}`;
   lcSelect.appendChild(opt);
 }
 
@@ -1176,7 +1179,7 @@ const agarSelect = document.getElementById('agarRecipe');
 for (const [id, r] of Object.entries(AGAR_RECIPES)) {
   const opt = document.createElement('option');
   opt.value = id;
-  opt.textContent = r.name;
+  opt.textContent = `${starsText(r.rating.stars)} ${r.name}`;
   agarSelect.appendChild(opt);
 }
 
