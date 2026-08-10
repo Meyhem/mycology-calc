@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mushroom Substrate Calculator</title>
+<title>Mushroom Cultivation Calculators</title>
 <style>
   :root {
     --bg: #f4f1ea;
@@ -30,6 +30,31 @@
   header h1 { font-size: 1.6rem; margin: 0 0 6px; }
   header p { color: var(--muted); margin: 0; font-size: 0.95rem; }
 
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border);
+  }
+  .tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
   .card {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -53,7 +78,7 @@
   .row { display: flex; gap: 12px; }
   .row > div { flex: 1; }
 
-  button {
+  button.primary {
     background: var(--accent);
     color: white;
     border: none;
@@ -65,7 +90,7 @@
     width: 100%;
     transition: background 0.15s;
   }
-  button:hover { background: var(--accent-dark); }
+  button.primary:hover { background: var(--accent-dark); }
 
   .desc { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
 
@@ -97,51 +122,97 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>🍄 Mushroom Substrate Calculator</h1>
-    <p>Pick a bulk substrate recipe and your grain spawn amount to get ingredient quantities and prep steps.</p>
+    <h1>🍄 Mushroom Cultivation Calculators</h1>
+    <p>Metric recipe calculators for home mushroom cultivation.</p>
   </header>
 
-  <div class="card">
-    <div class="field">
-      <label for="substrate">Target substrate</label>
-      <select id="substrate"></select>
-      <div class="desc" id="substrateDesc"></div>
-    </div>
-    <div class="field">
-      <label for="spawn">Grain spawn amount (mL)</label>
-      <input type="number" id="spawn" value="1000" min="1" step="50">
-      <div class="desc">Tip: 1 L of colonized grain spawn weighs roughly 700–800 g.</div>
-    </div>
-    <button id="calcBtn">Calculate recipe</button>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="substrate">Substrate Calculator</button>
+    <button class="tab-btn" data-tab="lc">Liquid Culture Calculator</button>
   </div>
 
-  <div class="card hidden" id="resultsCard">
-    <h2>Ingredients</h2>
-    <table>
-      <thead>
-        <tr><th>Ingredient</th><th class="num">Volume</th><th class="num">Weight</th></tr>
-      </thead>
-      <tbody id="ingredientRows"></tbody>
-      <tfoot>
-        <tr><td>Total substrate</td><td class="num" id="totalVol"></td><td class="num" id="totalWeight"></td></tr>
-      </tfoot>
-    </table>
-    <div class="footnote">Weights are approximate — actual density varies by moisture content and material brand. Adjust water gradually and check hydration by feel (squeeze test: a few drops of water, no dripping stream).</div>
+  <!-- ===================== SUBSTRATE TAB ===================== -->
+  <div class="tab-panel active" id="tab-substrate">
+    <div class="card">
+      <div class="field">
+        <label for="substrate">Target substrate</label>
+        <select id="substrate"></select>
+        <div class="desc" id="substrateDesc"></div>
+      </div>
+      <div class="field">
+        <label for="spawn">Grain spawn amount (mL)</label>
+        <input type="number" id="spawn" value="1000" min="1" step="50">
+        <div class="desc">Tip: 1 L of colonized grain spawn weighs roughly 700–800 g.</div>
+      </div>
+      <button class="primary" id="calcBtn">Calculate recipe</button>
+    </div>
+
+    <div class="card hidden" id="resultsCard">
+      <h2>Ingredients</h2>
+      <table>
+        <thead>
+          <tr><th>Ingredient</th><th class="num">Volume</th><th class="num">Weight</th></tr>
+        </thead>
+        <tbody id="ingredientRows"></tbody>
+        <tfoot>
+          <tr><td>Total substrate</td><td class="num" id="totalVol"></td><td class="num" id="totalWeight"></td></tr>
+        </tfoot>
+      </table>
+      <div class="footnote">Weights are approximate — actual density varies by moisture content and material brand. Adjust water gradually and check hydration by feel (squeeze test: a few drops of water, no dripping stream).</div>
+    </div>
+
+    <div class="card hidden" id="stepsCard">
+      <h2>Preparation steps</h2>
+      <ol class="steps" id="stepsList"></ol>
+      <div class="badge" id="hygieneNote"></div>
+    </div>
   </div>
 
-  <div class="card hidden" id="stepsCard">
-    <h2>Preparation steps</h2>
-    <ol class="steps" id="stepsList"></ol>
-    <div class="badge" id="hygieneNote"></div>
+  <!-- ===================== LIQUID CULTURE TAB ===================== -->
+  <div class="tab-panel" id="tab-lc">
+    <div class="card">
+      <div class="field">
+        <label for="lcRecipe">Liquid culture recipe</label>
+        <select id="lcRecipe"></select>
+        <div class="desc" id="lcDesc"></div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="lcJarVol">Liquid per jar (mL)</label>
+          <input type="number" id="lcJarVol" value="300" min="1" step="10">
+        </div>
+        <div class="field">
+          <label for="lcJarCount">Number of jars</label>
+          <input type="number" id="lcJarCount" value="4" min="1" step="1">
+        </div>
+      </div>
+      <div class="desc">Fill jars to about 70–80% of their total volume with liquid, leaving headspace for gas exchange and syringe access.</div>
+      <button class="primary" id="lcCalcBtn">Calculate recipe</button>
+    </div>
+
+    <div class="card hidden" id="lcResultsCard">
+      <h2>Ingredients (total for all jars)</h2>
+      <table>
+        <thead>
+          <tr><th>Ingredient</th><th class="num">Volume</th><th class="num">Weight</th></tr>
+        </thead>
+        <tbody id="lcIngredientRows"></tbody>
+        <tfoot>
+          <tr><td>Total liquid</td><td class="num" id="lcTotalVol">—</td><td class="num" id="lcTotalWeight"></td></tr>
+        </tfoot>
+      </table>
+      <div class="footnote">Concentrations are approximate nutrient % (w/v) commonly used for mushroom liquid culture. Adjust to taste/experience — too concentrated can slow mycelium growth.</div>
+    </div>
+
+    <div class="card hidden" id="lcStepsCard">
+      <h2>Preparation steps</h2>
+      <ol class="steps" id="lcStepsList"></ol>
+      <div class="badge" id="lcHygieneNote"></div>
+    </div>
   </div>
 </div>
 
 <script>
-const fmt = (n) => {
-  if (n >= 1000) return (n/1000).toFixed(2).replace(/\.00$/,'') + ' L / kg′';
-  return Math.round(n).toString();
-};
-// unified formatter: value in base unit (mL or g), returns readable string
 function fmtVol(mL) {
   if (mL >= 1000) return (mL/1000).toFixed(2).replace(/\.00$/,'') + ' L';
   return Math.round(mL) + ' mL';
@@ -151,18 +222,31 @@ function fmtWeight(g) {
   return Math.round(g) + ' g';
 }
 
-// Each substrate: given spawn volume V (mL), returns list of ingredients
-// {name, volumeMl (optional), weightG (optional)} and a steps() function.
+/* ---------------------------------------------------------------- */
+/* Tab switching                                                     */
+/* ---------------------------------------------------------------- */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------------------------------------------------------------- */
+/* Substrate calculator                                              */
+/* ---------------------------------------------------------------- */
 const SUBSTRATES = {
   cvg: {
     name: 'CVG — Coco Coir / Vermiculite / Gypsum',
     description: 'General-purpose bulk substrate for gourmet mushrooms (oyster, lion\'s mane, etc). Ratio ≈ 1 part spawn : 2 parts substrate by volume.',
     calc(V) {
-      const coirVol = V;               // hydrated coir volume, mL
-      const vermVol = V;                // vermiculite volume, mL
-      const coirDryWeight = coirVol * 0.16;   // g dry coir brick needed to yield this hydrated volume
-      const coirWater = coirVol * 0.75;       // mL water to hydrate the brick
-      const vermWeight = vermVol * 0.13;      // g
+      const coirVol = V;
+      const vermVol = V;
+      const coirDryWeight = coirVol * 0.16;
+      const coirWater = coirVol * 0.75;
+      const vermWeight = vermVol * 0.13;
       const substrateDryWeight = coirDryWeight + vermWeight;
       const gypsumWeight = substrateDryWeight * 0.02;
       return {
@@ -194,10 +278,10 @@ const SUBSTRATES = {
     name: "Master's Mix — Soy Hull + Hardwood Pellets",
     description: 'High-nutrient, high-yield substrate for gourmet mushrooms. Ratio ≈ 1 part spawn : 1 part substrate by volume.',
     calc(V) {
-      const dryPelletTotal = V * 0.4; // g, expands ~2.5x when hydrated
+      const dryPelletTotal = V * 0.4;
       const soyHull = dryPelletTotal / 2;
       const hardwood = dryPelletTotal / 2;
-      const soakWater = dryPelletTotal * 3; // generous soak, excess drained
+      const soakWater = dryPelletTotal * 3;
       return {
         ingredients: [
           { name: 'Soy hull pellets (dry)', weightG: soyHull },
@@ -225,9 +309,9 @@ const SUBSTRATES = {
     name: 'Pasteurized Straw',
     description: 'Classic low-cost bulk substrate, typically for oyster mushrooms. Ratio ≈ 1 part spawn : 4 parts straw by volume.',
     calc(V) {
-      const strawVol = V * 4;           // chopped straw, loosely packed, mL
-      const strawDryWeight = strawVol * 0.05; // g dry chopped straw
-      const water = strawDryWeight * 3;       // g/mL absorbed during hot-water pasteurization
+      const strawVol = V * 4;
+      const strawDryWeight = strawVol * 0.05;
+      const water = strawDryWeight * 3;
       return {
         ingredients: [
           { name: 'Chopped wheat/barley straw (dry)', volumeMl: strawVol, weightG: strawDryWeight },
@@ -254,7 +338,7 @@ const SUBSTRATES = {
     description: 'Rich substrate for button/portobello-type mushrooms. Ratio ≈ 1 part spawn : 6 parts composted substrate by volume.',
     calc(V) {
       const manureVol = V * 5;
-      const manureWeight = manureVol * 0.5; // g, moist composted material
+      const manureWeight = manureVol * 0.5;
       const gypsumWeight = manureWeight * 0.03;
       const water = manureWeight * 0.10;
       return {
@@ -281,22 +365,22 @@ const SUBSTRATES = {
   },
 };
 
-const select = document.getElementById('substrate');
+const substrateSelect = document.getElementById('substrate');
 for (const [id, s] of Object.entries(SUBSTRATES)) {
   const opt = document.createElement('option');
   opt.value = id;
   opt.textContent = s.name;
-  select.appendChild(opt);
+  substrateSelect.appendChild(opt);
 }
 
-function updateDesc() {
-  document.getElementById('substrateDesc').textContent = SUBSTRATES[select.value].description;
+function updateSubstrateDesc() {
+  document.getElementById('substrateDesc').textContent = SUBSTRATES[substrateSelect.value].description;
 }
-select.addEventListener('change', updateDesc);
-updateDesc();
+substrateSelect.addEventListener('change', updateSubstrateDesc);
+updateSubstrateDesc();
 
-function calculate() {
-  const id = select.value;
+function calculateSubstrate() {
+  const id = substrateSelect.value;
   const spawn = parseFloat(document.getElementById('spawn').value);
   if (!spawn || spawn <= 0) return;
 
@@ -328,10 +412,180 @@ function calculate() {
   document.getElementById('stepsCard').classList.remove('hidden');
 }
 
-document.getElementById('calcBtn').addEventListener('click', calculate);
-document.getElementById('spawn').addEventListener('keydown', e => { if (e.key === 'Enter') calculate(); });
+document.getElementById('calcBtn').addEventListener('click', calculateSubstrate);
+document.getElementById('spawn').addEventListener('keydown', e => { if (e.key === 'Enter') calculateSubstrate(); });
 
-calculate();
+/* ---------------------------------------------------------------- */
+/* Liquid culture calculator                                         */
+/* ---------------------------------------------------------------- */
+const LC_RECIPES = {
+  lme: {
+    name: 'Light Malt Extract (LME) Syrup — 4%',
+    description: 'The most common LC recipe. Gentle, reliable nutrient source for mycelium growth.',
+    calc(V) {
+      const lme = V * 0.04; // g, 4% w/v
+      return {
+        ingredients: [
+          { name: 'Light malt extract (LME)', weightG: lme },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: lme + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Dissolve ${fmtWeight(r.ingredients[0].weightG)} light malt extract into about half of your water while gently heating and stirring until fully dissolved.`,
+        `Top up with the remaining water to reach a total of ${fmtVol(V)}.`,
+        `Distribute into jars, filling each to about 70–80% capacity. Fit lids with self-healing injection ports and micron filter for gas exchange.`,
+        `Pressure sterilize at 15 psi (121°C) for 20–25 minutes. Let cool fully to room temperature before handling.`,
+        `In a still-air box or flow hood, inject spore solution or liquid culture (1–2 mL per jar) through the injection port with a sterile syringe.`,
+        `Incubate at 21–27°C, swirling gently every day or two. Mycelium growth appears as fluffy white clouds within 3–10 days.`,
+      ];
+    },
+    hygiene: 'Discard any jar that turns cloudy/discolored unevenly, smells sour or rotten, or shows colored (green/black/pink) spots — signs of contamination.'
+  },
+
+  honey: {
+    name: 'Honey Water — 4%',
+    description: 'Simple pantry-ingredient alternative to malt extract, similar nutrient concentration.',
+    calc(V) {
+      const honey = V * 0.04;
+      return {
+        ingredients: [
+          { name: 'Raw honey', weightG: honey },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: honey + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Warm about half your water and stir in ${fmtWeight(r.ingredients[0].weightG)} raw honey until fully dissolved.`,
+        `Top up with remaining water to reach ${fmtVol(V)} total.`,
+        `Distribute into jars, filling each to 70–80% capacity. Fit lids with self-healing injection ports and micron filter.`,
+        `Pressure sterilize at 15 psi (121°C) for 20–25 minutes, then cool completely.`,
+        `Inject spore solution or liquid culture (1–2 mL per jar) in a still-air box or flow hood.`,
+        `Incubate at 21–27°C, swirling every day or two, until you see fluffy white mycelium growth (3–10 days).`,
+      ];
+    },
+    hygiene: 'Honey water can be slightly more contamination-prone than LME — always use raw (not heavily processed) honey and sterilize thoroughly.'
+  },
+
+  cornsyrup: {
+    name: 'Light Corn Syrup — 3%',
+    description: 'Cheap, widely available alternative with a slightly lower nutrient concentration.',
+    calc(V) {
+      const syrup = V * 0.03;
+      return {
+        ingredients: [
+          { name: 'Light corn syrup', weightG: syrup },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: syrup + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Stir ${fmtWeight(r.ingredients[0].weightG)} light corn syrup into warm water until fully dissolved.`,
+        `Top up with remaining water to reach ${fmtVol(V)} total.`,
+        `Distribute into jars, filling each to 70–80% capacity. Fit lids with self-healing injection ports and micron filter.`,
+        `Pressure sterilize at 15 psi (121°C) for 20–25 minutes, then cool completely.`,
+        `Inject spore solution or liquid culture (1–2 mL per jar) in a still-air box or flow hood.`,
+        `Incubate at 21–27°C, swirling every day or two, until fluffy white mycelium growth appears (3–10 days).`,
+      ];
+    },
+    hygiene: 'Discard any jar showing uneven cloudiness, odd colors, or bad smell — signs of bacterial or mold contamination.'
+  },
+
+  potatodextrose: {
+    name: 'Potato Dextrose Liquid — 20% potato / 2% dextrose',
+    description: 'Closer to PDA nutrient profile; a good option if you already work with potato-based media.',
+    calc(V) {
+      const potato = V * 0.2;
+      const dextrose = V * 0.02;
+      return {
+        ingredients: [
+          { name: 'Peeled potato (diced)', weightG: potato },
+          { name: 'Dextrose (glucose)', weightG: dextrose },
+          { name: 'Water (for boiling + topping to volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: potato + dextrose + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Peel and dice ${fmtWeight(r.ingredients[0].weightG)} potato, then boil in most of the water for 20–30 minutes until soft.`,
+        `Strain out the potato solids, keeping only the infusion liquid. Dissolve in ${fmtWeight(r.ingredients[1].weightG)} dextrose while still warm.`,
+        `Top up with water to reach ${fmtVol(V)} total volume.`,
+        `Distribute into jars, filling each to 70–80% capacity. Fit lids with self-healing injection ports and micron filter.`,
+        `Pressure sterilize at 15 psi (121°C) for 20–25 minutes, then cool completely.`,
+        `Inject spore solution or liquid culture (1–2 mL per jar) in a still-air box or flow hood, then incubate at 21–27°C until fluffy white growth appears (3–10 days).`,
+      ];
+    },
+    hygiene: 'Potato-based liquids are nutrient-rich and more contamination-prone — sterilize thoroughly and keep injection technique very clean.'
+  },
+};
+
+const lcSelect = document.getElementById('lcRecipe');
+for (const [id, r] of Object.entries(LC_RECIPES)) {
+  const opt = document.createElement('option');
+  opt.value = id;
+  opt.textContent = r.name;
+  lcSelect.appendChild(opt);
+}
+
+function updateLcDesc() {
+  document.getElementById('lcDesc').textContent = LC_RECIPES[lcSelect.value].description;
+}
+lcSelect.addEventListener('change', updateLcDesc);
+updateLcDesc();
+
+function calculateLc() {
+  const id = lcSelect.value;
+  const jarVol = parseFloat(document.getElementById('lcJarVol').value);
+  const jarCount = parseFloat(document.getElementById('lcJarCount').value);
+  if (!jarVol || jarVol <= 0 || !jarCount || jarCount <= 0) return;
+
+  const totalVolume = jarVol * jarCount;
+  const recipe = LC_RECIPES[id];
+  const result = recipe.calc(totalVolume);
+
+  const rows = document.getElementById('lcIngredientRows');
+  rows.innerHTML = '';
+  result.ingredients.forEach(ing => {
+    const tr = document.createElement('tr');
+    const vol = ing.volumeMl !== undefined ? fmtVol(ing.volumeMl) : '—';
+    const wt = ing.weightG !== undefined ? fmtWeight(ing.weightG) : '—';
+    tr.innerHTML = `<td>${ing.name}</td><td class="num">${vol}</td><td class="num">${wt}</td>`;
+    rows.appendChild(tr);
+  });
+  document.getElementById('lcTotalVol').textContent = fmtVol(result.totalVolume) + ` (${jarCount} jars)`;
+  document.getElementById('lcTotalWeight').textContent = fmtWeight(result.totalWeight);
+
+  const stepsList = document.getElementById('lcStepsList');
+  stepsList.innerHTML = '';
+  recipe.steps(totalVolume, result).forEach(step => {
+    const li = document.createElement('li');
+    li.textContent = step;
+    stepsList.appendChild(li);
+  });
+  document.getElementById('lcHygieneNote').textContent = '⚠ ' + recipe.hygiene;
+
+  document.getElementById('lcResultsCard').classList.remove('hidden');
+  document.getElementById('lcStepsCard').classList.remove('hidden');
+}
+
+document.getElementById('lcCalcBtn').addEventListener('click', calculateLc);
+['lcJarVol', 'lcJarCount'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') calculateLc(); });
+});
+
+calculateSubstrate();
+calculateLc();
 </script>
 </body>
 </html>
