@@ -1,4 +1,4 @@
-[Download the latest build (dist/index.html)](https://raw.githubusercontent.com/Meyhem/subcalc/main/dist/index.html)
+[Open the app](https://meyhem.github.io/mycology-calc/)
 
 # React + Vite
 

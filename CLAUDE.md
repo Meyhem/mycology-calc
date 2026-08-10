@@ -1,4 +1,4 @@
-# subcalc
+# mycology-calc
 
 React + Vite app that builds to a single self-contained `dist/index.html` (via `vite-plugin-singlefile`) — no separate JS/CSS assets, so it can be shared or hosted as one file.
 
