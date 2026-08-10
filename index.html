@@ -776,6 +776,91 @@ const AGAR_RECIPES = {
     },
     hygiene: 'Honey can slightly soften agar over time — use plates within a few weeks and store cold. Sterilize thoroughly as with any sugar-based media.'
   },
+
+  ricewater: {
+    name: 'Rice Water Agar (RWA)',
+    description: 'Cheap, widely-used improvised agar made from starchy rice cooking water — a common no-malt-extract substitute.',
+    calc(V) {
+      const rice = V * 0.05;      // 50 g/L uncooked rice, boiled then strained out
+      const dextrose = V * 0.01;  // 1% w/v boost
+      const agar = V * 0.02;      // 2% w/v
+      return {
+        ingredients: [
+          { name: 'Uncooked white rice', weightG: rice },
+          { name: 'Dextrose (glucose)', weightG: dextrose },
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Water (for boiling + topping to volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: rice + dextrose + agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Simmer ${fmtWeight(r.ingredients[0].weightG)} uncooked rice in most of the water for 15–20 minutes until the water turns cloudy and starchy — do not let the rice fully break apart.`,
+        `Strain out the rice, keeping only the starchy rice water. Top back up with water to reach ${fmtVol(V)} total.`,
+        `While still hot, stir in ${fmtWeight(r.ingredients[1].weightG)} dextrose and ${fmtWeight(r.ingredients[2].weightG)} agar-agar powder. Bring to a gentle boil for 1–2 minutes, stirring, until agar fully dissolves.`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'Rice starch supports contaminants as readily as mycelium — sterilize thoroughly and don\'t skip the pressure-cook step even though the ingredients look "just food".'
+  },
+
+  coconutwater: {
+    name: 'Coconut Water Agar (CWA)',
+    description: 'Improvised agar using unsweetened coconut water as the base liquid — naturally contains sugars and minerals.',
+    calc(V) {
+      const dextrose = V * 0.01; // 1% w/v top-up
+      const agar = V * 0.02;     // 2% w/v
+      return {
+        ingredients: [
+          { name: 'Unsweetened coconut water', volumeMl: V },
+          { name: 'Dextrose (glucose)', weightG: dextrose },
+          { name: 'Agar-agar powder', weightG: agar },
+        ],
+        totalVolume: V,
+        totalWeight: V + dextrose + agar,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Pour ${fmtVol(r.ingredients[0].volumeMl)} unsweetened coconut water (plain, no added sugar/flavoring) into a heat-safe flask or jar.`,
+        `Stir in ${fmtWeight(r.ingredients[1].weightG)} dextrose and ${fmtWeight(r.ingredients[2].weightG)} agar-agar powder, then bring to a gentle boil for 1–2 minutes, stirring, until the agar fully dissolves.`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'Use pure, unsweetened, preferably pasteurized coconut water — flavored or sugar-added versions contaminate more easily and can inhibit mycelium.'
+  },
+
+  plainwater: {
+    name: 'Plain Water Agar (PWA)',
+    description: 'Bare-bones improvised agar with no added nutrients — useful for spore germination checks and isolating clean tissue away from faster-growing contaminants.',
+    calc(V) {
+      const agar = V * 0.015; // 1.5% w/v, slightly softer than nutrient agars
+      return {
+        ingredients: [
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Stir ${fmtWeight(r.ingredients[0].weightG)} agar-agar powder into ${fmtVol(V)} water in a heat-safe flask or jar.`,
+        `Bring to a gentle boil for 1–2 minutes, stirring constantly, until the agar fully dissolves (liquid turns clear).`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'With no added nutrients, fast-growing contaminants have less of an advantage — handy for isolating clean mycelium, but growth will be slower and thinner than on MEA/PDA.'
+  },
 };
 
 const agarSelect = document.getElementById('agarRecipe');
