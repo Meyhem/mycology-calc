@@ -94,6 +94,11 @@
 
   .desc { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
 
+  .rating { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; font-size: 0.85rem; }
+  .rating .stars { color: #d9a441; letter-spacing: 1px; font-size: 1rem; }
+  .rating .stars .empty { color: var(--border); }
+  .rating .note { color: var(--muted); }
+
   table { width: 100%; border-collapse: collapse; margin-top: 8px; }
   th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
   th { color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
@@ -139,6 +144,7 @@
         <label for="substrate">Target substrate</label>
         <select id="substrate"></select>
         <div class="desc" id="substrateDesc"></div>
+        <div class="rating" id="substrateRating"></div>
       </div>
       <div class="field">
         <label for="spawn">Grain spawn amount (mL)</label>
@@ -176,6 +182,7 @@
         <label for="lcRecipe">Liquid culture recipe</label>
         <select id="lcRecipe"></select>
         <div class="desc" id="lcDesc"></div>
+        <div class="rating" id="lcRating"></div>
       </div>
       <div class="row">
         <div class="field">
@@ -219,6 +226,7 @@
         <label for="agarRecipe">Agar recipe</label>
         <select id="agarRecipe"></select>
         <div class="desc" id="agarDesc"></div>
+        <div class="rating" id="agarRating"></div>
       </div>
       <div class="row">
         <div class="field">
@@ -265,6 +273,12 @@ function fmtWeight(g) {
   if (g >= 1000) return (g/1000).toFixed(2).replace(/\.00$/,'') + ' kg';
   return Math.round(g) + ' g';
 }
+function renderRating(elId, rating) {
+  const filled = '★'.repeat(rating.stars);
+  const empty = '☆'.repeat(5 - rating.stars);
+  document.getElementById(elId).innerHTML =
+    `<span class="stars">${filled}<span class="empty">${empty}</span></span><span class="note">${rating.note}</span>`;
+}
 
 /* ---------------------------------------------------------------- */
 /* Tab switching                                                     */
@@ -285,6 +299,7 @@ const SUBSTRATES = {
   cvg: {
     name: 'CVG — Coco Coir / Vermiculite / Gypsum',
     description: 'General-purpose bulk substrate for gourmet mushrooms (oyster, lion\'s mane, etc). Ratio ≈ 1 part spawn : 2 parts substrate by volume.',
+    rating: { stars: 5, note: 'Excellent — the reliable gold standard: consistent colonization, strong yields, low contamination risk.' },
     calc(V) {
       const coirVol = V;
       const vermVol = V;
@@ -321,6 +336,7 @@ const SUBSTRATES = {
   masters: {
     name: "Master's Mix — Soy Hull + Hardwood Pellets",
     description: 'High-nutrient, high-yield substrate for gourmet mushrooms. Ratio ≈ 1 part spawn : 1 part substrate by volume.',
+    rating: { stars: 5, note: 'Excellent — typically the highest yields of any common recipe, but demands full sterilization and clean technique.' },
     calc(V) {
       const dryPelletTotal = V * 0.4;
       const soyHull = dryPelletTotal / 2;
@@ -352,6 +368,7 @@ const SUBSTRATES = {
   straw: {
     name: 'Pasteurized Straw',
     description: 'Classic low-cost bulk substrate, typically for oyster mushrooms. Ratio ≈ 1 part spawn : 4 parts straw by volume.',
+    rating: { stars: 4, note: 'Very good — fast colonization and cheap, but yields run lower than nutrient-supplemented mixes like CVG or Master\'s Mix.' },
     calc(V) {
       const strawVol = V * 4;
       const strawDryWeight = strawVol * 0.05;
@@ -380,6 +397,7 @@ const SUBSTRATES = {
   manure: {
     name: 'Composted Manure Substrate',
     description: 'Rich substrate for button/portobello-type mushrooms. Ratio ≈ 1 part spawn : 6 parts composted substrate by volume.',
+    rating: { stars: 4, note: 'Very good for manure-loving species (button, portobello); a poor fit for wood-loving species like oyster or shiitake.' },
     calc(V) {
       const manureVol = V * 5;
       const manureWeight = manureVol * 0.5;
@@ -407,6 +425,93 @@ const SUBSTRATES = {
     },
     hygiene: 'Composted manure carries a natural microbial community — pasteurize (not sterilize) to keep the beneficial competitors alive while knocking back pathogens.'
   },
+
+  coffee: {
+    name: 'Spent Coffee Grounds',
+    description: 'Beginner-friendly recycled substrate for oyster mushrooms — the brewing process already pasteurizes the grounds. Ratio ≈ 1 part spawn : 2 parts grounds by volume.',
+    rating: { stars: 3, note: 'Good, very low-effort and low-contamination beginner option, but modest yields — best used fresh and mixed with straw or coir for bulk.' },
+    calc(V) {
+      const groundsVol = V * 2;
+      const groundsWeight = groundsVol * 0.5;
+      return {
+        ingredients: [
+          { name: 'Used (spent) coffee grounds, cooled', volumeMl: groundsVol, weightG: groundsWeight },
+        ],
+        totalVolume: groundsVol,
+        totalWeight: groundsWeight,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Collect ${fmtWeight(r.ingredients[0].weightG)} of freshly used coffee grounds (still warm from brewing counts as pasteurized) and let them cool to room temperature in a clean, covered container.`,
+        `Break up any clumps — grounds should be crumbly, not compacted.`,
+        `In a still-air box or clean area, break apart your grain spawn (${fmtVol(V)}) and mix it thoroughly into the grounds at roughly a 1:2 ratio.`,
+        `Pack loosely into a grow bag/tub with filter patch or air holes — don't compact, coffee grounds need airflow.`,
+        `Incubate in the dark at 21–24°C until fully colonized. Use within a day or two of brewing for the lowest contamination risk.`,
+      ];
+    },
+    hygiene: 'The heat of brewing (near 90°C+) plus coffee\'s natural acidity give this substrate solid built-in contamination resistance — just keep containers and hands clean and use grounds while still fresh.'
+  },
+
+  cardboard: {
+    name: 'Cardboard Substrate',
+    description: 'Cheap, simple beginner substrate from shredded corrugated cardboard — good for practice runs and small oyster mushroom projects. Ratio ≈ 1 part spawn : 3 parts soaked cardboard by volume.',
+    rating: { stars: 2, note: 'Fair — very cheap and easy to source, but low nutrient density means smaller, slower flushes than dedicated substrates. Good for learning, not for serious yields.' },
+    calc(V) {
+      const cardboardVol = V * 3;
+      const cardboardWeight = cardboardVol * 0.2;
+      const water = cardboardWeight * 2;
+      return {
+        ingredients: [
+          { name: 'Shredded plain corrugated cardboard (dry, no ink/tape)', volumeMl: cardboardVol, weightG: cardboardWeight },
+          { name: 'Water (for soaking/pasteurizing)', volumeMl: water },
+        ],
+        totalVolume: cardboardVol,
+        totalWeight: cardboardWeight + water,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Remove all tape, labels, and glossy printed sections, then tear or shred ${fmtWeight(r.ingredients[0].weightG)} plain corrugated cardboard into strips.`,
+        `Submerge in ${fmtVol(r.ingredients[1].volumeMl)} hot water (60–70°C) for 60–90 minutes to pasteurize and soften.`,
+        `Drain and gently squeeze out excess water until moist but not dripping.`,
+        `Let cool to room temperature, then break apart your grain spawn (${fmtVol(V)}) and layer it between strips of cardboard in a grow bag.`,
+        `Poke small air holes in the bag, and incubate in the dark at 21–24°C until fully colonized.`,
+      ];
+    },
+    hygiene: 'Only use plain brown cardboard — printed ink and glossy coatings can inhibit growth or introduce contaminants. Pasteurization (not full sterilization) is sufficient for this low-nutrient substrate.'
+  },
+
+  sawdust: {
+    name: 'Sawdust Fruiting Block (Hardwood + Bran)',
+    description: 'Traditional substrate for wood-loving species like shiitake, reishi, and lion\'s mane — hardwood sawdust supplemented with wheat bran. Ratio ≈ 1 part spawn : 4 parts substrate by volume.',
+    rating: { stars: 5, note: 'Excellent for wood-loving species — slower colonization than grain-friendly recipes, but dense blocks give a long, productive fruiting life.' },
+    calc(V) {
+      const substrateVol = V * 4;
+      const drySawdust = substrateVol * 0.24;
+      const dryBran = substrateVol * 0.06;
+      const water = (drySawdust + dryBran) * 1.3;
+      return {
+        ingredients: [
+          { name: 'Hardwood sawdust (dry, non-resinous)', weightG: drySawdust },
+          { name: 'Wheat bran', weightG: dryBran },
+          { name: 'Water (to hydrate)', volumeMl: water },
+        ],
+        totalVolume: substrateVol,
+        totalWeight: drySawdust + dryBran + water,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Combine ${fmtWeight(r.ingredients[0].weightG)} hardwood sawdust (oak, maple, beech — avoid resinous softwoods) with ${fmtWeight(r.ingredients[1].weightG)} wheat bran in a large tub.`,
+        `Gradually mix in ${fmtVol(r.ingredients[2].volumeMl)} water until you reach field capacity (squeeze test: a few drops release, no steady stream).`,
+        `Pack tightly into heat-tolerant bags or jars — sawdust blocks are dense, so pressure sterilize at 15 psi (121°C) for 2–2.5 hours (longer than looser substrates).`,
+        `Let cool completely, then break apart your grain spawn (${fmtVol(V)}) and mix in thoroughly at roughly a 1:4 ratio in a still-air box or flow hood.`,
+        `Seal and incubate in the dark at 21–24°C until fully colonized — this substrate is denser and typically takes longer (3–5+ weeks) than grain-based substrates.`,
+      ];
+    },
+    hygiene: 'The bran addition makes this substrate nutrient-rich and contamination-prone — full pressure sterilization with extended time is essential due to the density of packed sawdust.'
+  },
 };
 
 const substrateSelect = document.getElementById('substrate');
@@ -418,7 +523,9 @@ for (const [id, s] of Object.entries(SUBSTRATES)) {
 }
 
 function updateSubstrateDesc() {
-  document.getElementById('substrateDesc').textContent = SUBSTRATES[substrateSelect.value].description;
+  const s = SUBSTRATES[substrateSelect.value];
+  document.getElementById('substrateDesc').textContent = s.description;
+  renderRating('substrateRating', s.rating);
 }
 updateSubstrateDesc();
 
@@ -470,6 +577,7 @@ const LC_RECIPES = {
   lme: {
     name: 'Light Malt Extract (LME) Syrup — 4%',
     description: 'The most common LC recipe. Gentle, reliable nutrient source for mycelium growth.',
+    rating: { stars: 5, note: 'Excellent — the most widely used and reliable LC recipe, with consistent, vigorous growth.' },
     calc(V) {
       const lme = V * 0.04; // g, 4% w/v
       return {
@@ -497,6 +605,7 @@ const LC_RECIPES = {
   honey: {
     name: 'Honey Water — 4%',
     description: 'Simple pantry-ingredient alternative to malt extract, similar nutrient concentration.',
+    rating: { stars: 4, note: 'Very good — easy pantry option with solid growth, though slightly more contamination-prone than LME.' },
     calc(V) {
       const honey = V * 0.04;
       return {
@@ -524,6 +633,7 @@ const LC_RECIPES = {
   cornsyrup: {
     name: 'Light Corn Syrup — 3%',
     description: 'Cheap, widely available alternative with a slightly lower nutrient concentration.',
+    rating: { stars: 4, note: 'Very good — cheap, effective, and comparable in performance to honey water.' },
     calc(V) {
       const syrup = V * 0.03;
       return {
@@ -551,6 +661,7 @@ const LC_RECIPES = {
   dextrose: {
     name: 'Dextrose Syrup — 4%',
     description: 'Pure simple-sugar LC using dextrose (glucose) powder — very consistent, no boiling required to dissolve.',
+    rating: { stars: 4, note: 'Very good — highly consistent since it\'s a pure sugar, though mycelium can grow slightly thinner than on malt-based recipes.' },
     calc(V) {
       const dextrose = V * 0.04;
       return {
@@ -578,6 +689,7 @@ const LC_RECIPES = {
   potatodextrose: {
     name: 'Potato Dextrose Liquid — 20% potato / 2% dextrose',
     description: 'Closer to PDA nutrient profile; a good option if you already work with potato-based media.',
+    rating: { stars: 4, note: 'Very good — matches PDA\'s nutrient profile closely, giving vigorous growth, though more prep work than sugar syrups.' },
     calc(V) {
       const potato = V * 0.2;
       const dextrose = V * 0.02;
@@ -603,6 +715,90 @@ const LC_RECIPES = {
     },
     hygiene: 'Potato-based liquids are nutrient-rich and more contamination-prone — sterilize thoroughly and keep injection technique very clean.'
   },
+
+  brownsugar: {
+    name: 'Brown Sugar Syrup — 4%',
+    description: 'Budget pantry-ingredient LC using brown sugar — a step down from LME in refinement but very cheap and effective.',
+    rating: { stars: 3, note: 'Good budget option — works reliably, though growth is typically a bit less vigorous than malt-based recipes.' },
+    calc(V) {
+      const sugar = V * 0.04;
+      return {
+        ingredients: [
+          { name: 'Brown sugar', weightG: sugar },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: sugar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Stir ${fmtWeight(r.ingredients[0].weightG)} brown sugar into warm water until fully dissolved.`,
+        `Top up with remaining water to reach ${fmtVol(V)} total.`,
+        `Distribute into jars, filling each to 70–80% capacity. Fit lids with self-healing injection ports and micron filter.`,
+        `Pressure sterilize at 15 psi (121°C) for 20–25 minutes, then cool completely.`,
+        `Inject spore solution or liquid culture (1–2 mL per jar) in a still-air box or flow hood.`,
+        `Incubate at 21–27°C, swirling every day or two, until fluffy white mycelium growth appears (3–10 days).`,
+      ];
+    },
+    hygiene: 'Brown sugar\'s molasses content can slightly darken the syrup and make contamination harder to spot early — inspect closely and sterilize thoroughly.'
+  },
+
+  maple: {
+    name: 'Maple Syrup — 4%',
+    description: 'Improvised LC using pure maple syrup — its natural mineral content can give a small vigor boost over plain sugar syrups.',
+    rating: { stars: 3, note: 'Good pantry alternative — trace minerals may help vigor, but pure maple syrup is a pricier option.' },
+    calc(V) {
+      const syrup = V * 0.04;
+      return {
+        ingredients: [
+          { name: 'Pure maple syrup (not pancake syrup)', weightG: syrup },
+          { name: 'Distilled/RO water (to final volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: syrup + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Stir ${fmtWeight(r.ingredients[0].weightG)} pure maple syrup into warm water until fully dissolved.`,
+        `Top up with remaining water to reach ${fmtVol(V)} total.`,
+        `Distribute into jars, filling each to 70–80% capacity. Fit lids with self-healing injection ports and micron filter.`,
+        `Pressure sterilize at 15 psi (121°C) for 20–25 minutes, then cool completely.`,
+        `Inject spore solution or liquid culture (1–2 mL per jar) in a still-air box or flow hood.`,
+        `Incubate at 21–27°C, swirling every day or two, until fluffy white mycelium growth appears (3–10 days).`,
+      ];
+    },
+    hygiene: 'Use pure maple syrup only — imitation "pancake syrup" is mostly corn syrup with additives that offer no benefit. Sterilize thoroughly as with any sugar-based media.'
+  },
+
+  wort: {
+    name: 'Homemade Malted Barley Wort',
+    description: 'Fully improvised LC made by steeping crushed malted barley grain (like a mini beer mash) instead of using store-bought malt extract.',
+    rating: { stars: 5, note: 'Excellent — essentially homemade malt extract, near-identical performance to LME once you\'ve got the mashing technique down.' },
+    calc(V) {
+      const maltedBarley = V * 0.15;
+      return {
+        ingredients: [
+          { name: 'Crushed malted barley grain', weightG: maltedBarley },
+          { name: 'Water (for steeping + topping to volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: maltedBarley + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Heat most of the water to 65–68°C (use a thermometer — this range converts starch to sugar without denaturing the enzymes).`,
+        `Stir in ${fmtWeight(r.ingredients[0].weightG)} crushed malted barley grain and hold at 65–68°C for 60 minutes, stirring occasionally (this is a mini "mash").`,
+        `Strain out the spent grain husks through a mesh bag or cheesecloth, keeping only the sweet liquid (wort). Top up with water to reach ${fmtVol(V)} total.`,
+        `Distribute into jars, filling each to 70–80% capacity. Fit lids with self-healing injection ports and micron filter.`,
+        `Pressure sterilize at 15 psi (121°C) for 20–25 minutes, then cool completely.`,
+        `Inject spore solution or liquid culture (1–2 mL per jar) in a still-air box or flow hood, then incubate at 21–27°C until fluffy white growth appears (3–10 days).`,
+      ];
+    },
+    hygiene: 'Hold the mash temperature carefully — too hot and you lose the enzyme conversion, too cool and bacteria can gain a foothold before sterilization.'
+  },
 };
 
 const lcSelect = document.getElementById('lcRecipe');
@@ -614,7 +810,9 @@ for (const [id, r] of Object.entries(LC_RECIPES)) {
 }
 
 function updateLcDesc() {
-  document.getElementById('lcDesc').textContent = LC_RECIPES[lcSelect.value].description;
+  const r = LC_RECIPES[lcSelect.value];
+  document.getElementById('lcDesc').textContent = r.description;
+  renderRating('lcRating', r.rating);
 }
 updateLcDesc();
 
@@ -670,6 +868,7 @@ const AGAR_RECIPES = {
   mea: {
     name: 'Malt Extract Agar (MEA)',
     description: 'The most popular homemade agar for mushroom culture work — gentle nutrient level, easy to pour and read.',
+    rating: { stars: 5, note: 'Excellent — the gold standard for home culture work, reliable and easy to read.' },
     calc(V) {
       const lme = V * 0.02;   // 2% w/v
       const agar = V * 0.02;  // 2% w/v
@@ -699,6 +898,7 @@ const AGAR_RECIPES = {
   pda: {
     name: 'Potato Dextrose Agar (PDA)',
     description: 'Classic mycology standard, made from a real potato infusion — great for observing mycelium characteristics.',
+    rating: { stars: 5, note: 'Excellent — the mycology-standard formula, great vigor and ideal for observing growth characteristics.' },
     calc(V) {
       const potato = V * 0.2;   // 200 g/L potato infusion
       const dextrose = V * 0.02; // 2% dextrose
@@ -730,6 +930,7 @@ const AGAR_RECIPES = {
   mya: {
     name: 'Malt Yeast Agar (MYA)',
     description: 'MEA boosted with a small amount of nutritional/brewer\'s yeast for slightly faster, more vigorous mycelium growth.',
+    rating: { stars: 5, note: 'Excellent — the added yeast gives noticeably faster, more vigorous growth than plain MEA.' },
     calc(V) {
       const lme = V * 0.02;
       const yeast = V * 0.002; // 0.2% w/v
@@ -760,6 +961,7 @@ const AGAR_RECIPES = {
   honeyagar: {
     name: 'Honey Agar',
     description: 'Pantry-ingredient agar using raw honey instead of malt extract — a simple option if LME isn\'t on hand.',
+    rating: { stars: 3, note: 'Good backup option when LME isn\'t on hand, though the gel softens faster over storage time.' },
     calc(V) {
       const honey = V * 0.04; // 4% w/v (honey is less concentrated in sugars than LME)
       const agar = V * 0.02;
@@ -788,6 +990,7 @@ const AGAR_RECIPES = {
   ricewater: {
     name: 'Rice Water Agar (RWA)',
     description: 'Cheap, widely-used improvised agar made from starchy rice cooking water — a common no-malt-extract substitute.',
+    rating: { stars: 3, note: 'Good budget improvised option — solid growth for isolation work, though less vigorous than MEA/PDA.' },
     calc(V) {
       const rice = V * 0.05;      // 50 g/L uncooked rice, boiled then strained out
       const dextrose = V * 0.01;  // 1% w/v boost
@@ -819,6 +1022,7 @@ const AGAR_RECIPES = {
   coconutwater: {
     name: 'Coconut Water Agar (CWA)',
     description: 'Improvised agar using unsweetened coconut water as the base liquid — naturally contains sugars and minerals.',
+    rating: { stars: 3, note: 'Good improvised option — naturally near-sterile liquid with decent minerals, but less refined growth than MEA.' },
     calc(V) {
       const dextrose = V * 0.01; // 1% w/v top-up
       const agar = V * 0.02;     // 2% w/v
@@ -847,6 +1051,7 @@ const AGAR_RECIPES = {
   plainwater: {
     name: 'Plain Water Agar (PWA)',
     description: 'Bare-bones improvised agar with no added nutrients — useful for spore germination checks and isolating clean tissue away from faster-growing contaminants.',
+    rating: { stars: 2, note: 'Fair overall performance — slow, thin growth by design, but valuable specifically for clean isolation and germination work.' },
     calc(V) {
       const agar = V * 0.015; // 1.5% w/v, slightly softer than nutrient agars
       return {
@@ -869,6 +1074,102 @@ const AGAR_RECIPES = {
     },
     hygiene: 'With no added nutrients, fast-growing contaminants have less of an advantage — handy for isolating clean mycelium, but growth will be slower and thinner than on MEA/PDA.'
   },
+
+  banana: {
+    name: 'Banana Agar (BA)',
+    description: 'Improvised agar made from blended ripe banana — a popular fruit-based option with good natural sugars.',
+    rating: { stars: 3, note: 'Good improvised option — ripe bananas provide solid sugars, but batches can be a bit cloudier/less clear than MEA.' },
+    calc(V) {
+      const banana = V * 0.15;
+      const dextrose = V * 0.01;
+      const agar = V * 0.02;
+      return {
+        ingredients: [
+          { name: 'Ripe banana (blended)', weightG: banana },
+          { name: 'Dextrose (glucose)', weightG: dextrose },
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Water (for blending + topping to volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: banana + dextrose + agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Blend ${fmtWeight(r.ingredients[0].weightG)} peeled ripe banana with about a third of the water until smooth.`,
+        `Strain through cheesecloth or a fine mesh bag to remove pulp fibers, keeping the liquid. Top up with remaining water to reach ${fmtVol(V)} total.`,
+        `Stir in ${fmtWeight(r.ingredients[1].weightG)} dextrose and ${fmtWeight(r.ingredients[2].weightG)} agar-agar powder, then bring to a gentle boil for 1–2 minutes, stirring, until the agar fully dissolves.`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'Use fully ripe (but not moldy) bananas and strain thoroughly — leftover pulp fibers can trap air bubbles and make contamination harder to spot early.'
+  },
+
+  carrot: {
+    name: 'Carrot Agar (CA)',
+    description: 'Improvised agar using a boiled carrot infusion in place of potato — a common beginner substitute for PDA.',
+    rating: { stars: 3, note: 'Good improvised option — mild, beginner-friendly nutrient profile, commonly used for isolation work.' },
+    calc(V) {
+      const carrot = V * 0.2;
+      const dextrose = V * 0.01;
+      const agar = V * 0.02;
+      return {
+        ingredients: [
+          { name: 'Carrot (chopped)', weightG: carrot },
+          { name: 'Dextrose (glucose)', weightG: dextrose },
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Water (for boiling + topping to volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: carrot + dextrose + agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Chop ${fmtWeight(r.ingredients[0].weightG)} carrot and boil in most of the water for 20–30 minutes until soft.`,
+        `Strain out the solids, keeping only the carrot infusion liquid. Top up with water back to ${fmtVol(V)} total.`,
+        `While still hot, stir in ${fmtWeight(r.ingredients[1].weightG)} dextrose and ${fmtWeight(r.ingredients[2].weightG)} agar-agar powder. Bring to a gentle boil for 1–2 minutes, stirring, until agar fully dissolves.`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'Carrot infusions are mild in nutrients — sterilize thoroughly as usual, but expect slightly slower colonization than richer media like PDA.'
+  },
+
+  beerwort: {
+    name: 'Beer Wort Agar (Homemade Malt)',
+    description: 'Fully improvised agar made by steeping crushed malted barley grain into a homemade wort, then gelling with agar — no store-bought malt extract needed.',
+    rating: { stars: 5, note: 'Excellent — essentially homemade MEA once you dial in the mash technique, with very similar performance.' },
+    calc(V) {
+      const maltedBarley = V * 0.1;
+      const dextrose = V * 0.01;
+      const agar = V * 0.02;
+      return {
+        ingredients: [
+          { name: 'Crushed malted barley grain', weightG: maltedBarley },
+          { name: 'Dextrose (glucose)', weightG: dextrose },
+          { name: 'Agar-agar powder', weightG: agar },
+          { name: 'Water (for steeping + topping to volume)', volumeMl: V },
+        ],
+        totalVolume: V,
+        totalWeight: maltedBarley + dextrose + agar + V,
+      };
+    },
+    steps(V, r) {
+      return [
+        `Heat most of the water to 65–68°C, then stir in ${fmtWeight(r.ingredients[0].weightG)} crushed malted barley grain. Hold at 65–68°C for 45–60 minutes, stirring occasionally.`,
+        `Strain out the spent grain husks through a mesh bag or cheesecloth, keeping only the sweet wort liquid. Top up with water to reach ${fmtVol(V)} total.`,
+        `While still warm, stir in ${fmtWeight(r.ingredients[1].weightG)} dextrose and ${fmtWeight(r.ingredients[2].weightG)} agar-agar powder. Bring to a gentle boil for 1–2 minutes, stirring, until the agar fully dissolves.`,
+        `Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.`,
+        `Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.`,
+        `Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.`,
+      ];
+    },
+    hygiene: 'Hold the mash temperature carefully for proper starch-to-sugar conversion, and sterilize thoroughly afterward — same care as with the liquid culture version of this recipe.'
+  },
 };
 
 const agarSelect = document.getElementById('agarRecipe');
@@ -880,7 +1181,9 @@ for (const [id, r] of Object.entries(AGAR_RECIPES)) {
 }
 
 function updateAgarDesc() {
-  document.getElementById('agarDesc').textContent = AGAR_RECIPES[agarSelect.value].description;
+  const r = AGAR_RECIPES[agarSelect.value];
+  document.getElementById('agarDesc').textContent = r.description;
+  renderRating('agarRating', r.rating);
 }
 updateAgarDesc();
 
