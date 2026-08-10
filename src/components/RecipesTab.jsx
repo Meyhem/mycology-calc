@@ -46,6 +46,39 @@ export default function RecipesTab({ active, ui, speciesTexts, recipeTexts, spec
                 {t.steps.map((step, i) => <li key={i}>{step}</li>)}
               </ol>
             </div>
+
+            <div className="field">
+              <h2>{ui.recipeNutritionHeader}</h2>
+              <div className="profile-grid">
+                <div className="profile-item">
+                  <div className="k">{ui.recipeKcalLabel}</div>
+                  <div className="v">{recipe.nutrition.kcal} {ui.recipeKcalUnit}</div>
+                </div>
+                <div className="profile-item">
+                  <div className="k">{ui.recipeProteinLabel}</div>
+                  <div className="v">{recipe.nutrition.proteinG} g</div>
+                </div>
+                <div className="profile-item">
+                  <div className="k">{ui.recipeCarbsLabel}</div>
+                  <div className="v">{recipe.nutrition.carbsG} g</div>
+                </div>
+                <div className="profile-item">
+                  <div className="k">{ui.recipeFatLabel}</div>
+                  <div className="v">{recipe.nutrition.fatG} g</div>
+                </div>
+                <div className="profile-item">
+                  <div className="k">{ui.recipeFiberLabel}</div>
+                  <div className="v">{recipe.nutrition.fiberG} g</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="field">
+              <h2>{ui.recipeBenefitsHeader}</h2>
+              <ul className="ingredients">
+                {t.benefits.map((benefit, i) => <li key={i}>{benefit}</li>)}
+              </ul>
+            </div>
           </div>
         );
       })}

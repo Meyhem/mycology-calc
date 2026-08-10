@@ -121,7 +121,15 @@ export const I18N = {
       recipeServingsLabel: 'Servings',
       recipeIngredientsHeader: 'Ingredients',
       recipeStepsHeader: 'Steps',
-      recipesFootnote: 'Cook mushrooms thoroughly — several species (morels especially) are unsafe raw or undercooked. These are general starting points; adjust seasoning and cooking time to taste.',
+      recipeNutritionHeader: 'Nutrition (per serving, approx.)',
+      recipeKcalLabel: 'Calories',
+      recipeKcalUnit: 'kcal',
+      recipeProteinLabel: 'Protein',
+      recipeCarbsLabel: 'Carbs',
+      recipeFatLabel: 'Fat',
+      recipeFiberLabel: 'Fiber',
+      recipeBenefitsHeader: 'Why it\'s good for you',
+      recipesFootnote: 'Cook mushrooms thoroughly — several species (morels especially) are unsafe raw or undercooked. These are general starting points; adjust seasoning and cooking time to taste. Nutrition values are rough estimates, not a lab analysis, and the benefit notes are general nutritional information, not medical advice.',
     },
     substrates: {
       cvg: {
@@ -679,6 +687,11 @@ export const I18N = {
             'Add butter and garlic and sauté for another 3–4 minutes until golden at the edges.',
             'Season with salt and pepper, top with parsley, and serve immediately.',
           ],
+          benefits: [
+            'Low in calories and naturally low in fat before the butter is added',
+            'Good source of B vitamins and potassium',
+            'Contains dietary fiber, including beta-glucans',
+          ],
         },
         soup: {
           name: 'Creamy Oyster Mushroom Soup',
@@ -699,6 +712,11 @@ export const I18N = {
             'Blend until smooth (or leave chunky), stir in cream, and season to taste.',
             'Reheat gently without boiling and serve hot.',
           ],
+          benefits: [
+            'Warming, high-volume meal that is naturally cholesterol-free',
+            'Good source of B vitamins from the mushrooms',
+            'Onion and garlic add allium compounds',
+          ],
         },
       },
       pinkOyster: {
@@ -718,6 +736,11 @@ export const I18N = {
             'Fry in a hot pan in a single layer, without crowding, until crisp and browned on both sides, 6–8 minutes total.',
             'Drain briefly on paper towel, salt lightly, and serve hot.',
           ],
+          benefits: [
+            'Naturally low in fat before frying',
+            'Good source of potassium and B vitamins',
+            'A plant-based, lower-fat alternative to bacon in a meal',
+          ],
         },
         tacos: {
           name: 'Pink Oyster Mushroom Tacos',
@@ -736,6 +759,11 @@ export const I18N = {
             'Sear in hot oil until well browned, about 8 minutes, stirring occasionally.',
             'Add cumin and chili powder, cook 1 minute more, then toss with lime juice.',
             'Warm the tortillas, fill with the mushroom mixture, and add toppings.',
+          ],
+          benefits: [
+            'High-fiber meal thanks to the mushrooms and toppings',
+            'Good plant-based protein contribution from the mushrooms',
+            'Lime adds vitamin C',
           ],
         },
       },
@@ -758,6 +786,11 @@ export const I18N = {
             'Add butter and garlic in the last minute and baste.',
             'Finish with a squeeze of lemon and serve.',
           ],
+          benefits: [
+            'Firm texture provides satiety with relatively few calories',
+            'Contains potassium and B vitamins',
+            'Naturally low in sugar',
+          ],
         },
         skewers: {
           name: 'Grilled King Oyster Skewers',
@@ -775,6 +808,11 @@ export const I18N = {
             'Cut mushrooms into thick chunks and toss in half the glaze; let sit 10 minutes.',
             'Thread onto skewers and grill or pan-sear over medium-high heat, turning often, 8–10 minutes.',
             'Brush with the remaining glaze during the last 2 minutes and serve.',
+          ],
+          benefits: [
+            'Grilling instead of frying keeps added fat modest',
+            'Ginger and garlic contribute antioxidant plant compounds',
+            'Good source of B vitamins from the mushrooms',
           ],
         },
       },
@@ -795,6 +833,11 @@ export const I18N = {
             'Sear in butter over medium-high heat, 3–4 minutes per side, until golden and crisp-edged.',
             'Add garlic in the last minute, season, and finish with lemon.',
           ],
+          benefits: [
+            'Low in carbohydrates',
+            'Contains B vitamins and minerals like potassium',
+            'Naturally cholesterol-free',
+          ],
         },
         crabcakes: {
           name: 'Lion\'s Mane "Crab" Cakes',
@@ -812,6 +855,11 @@ export const I18N = {
             'Mix with egg, breadcrumbs, mayonnaise, and seasoning until it holds together.',
             'Shape into patties and chill 15 minutes.',
             'Pan-fry in oil over medium heat, 3–4 minutes per side, until golden.',
+          ],
+          benefits: [
+            'Good plant-based protein contribution from the egg and mushroom',
+            'Lower in saturated fat than traditional crab cakes',
+            'Contains B vitamins from the mushrooms',
           ],
         },
       },
@@ -833,6 +881,11 @@ export const I18N = {
             'Stir in soy sauce and sesame oil, and toss to coat.',
             'Top with spring onion and serve.',
           ],
+          benefits: [
+            'Good source of B vitamins, especially riboflavin and niacin',
+            'Contains dietary fiber and beta-glucans',
+            'Naturally low in fat',
+          ],
         },
         dashi: {
           name: 'Shiitake Dashi Broth & Simmered Caps',
@@ -849,6 +902,11 @@ export const I18N = {
             'Simmer mushrooms and kombu gently for 20 minutes; remove kombu before it boils.',
             'Remove caps, slice, and set aside.',
             'Season the broth with soy sauce and mirin, return the sliced caps, and simmer 5 more minutes.',
+          ],
+          benefits: [
+            'Very low in fat and calories',
+            'Umami-rich broth needs less added salt for flavor',
+            'Shiitake contribute B vitamins and minerals',
           ],
         },
       },
@@ -867,6 +925,11 @@ export const I18N = {
             'Strain out the slices (they can be simmered a second time for a lighter batch).',
             'Sweeten to taste and serve hot.',
           ],
+          benefits: [
+            'Essentially calorie-free unless sweetened',
+            'Caffeine-free hot drink',
+            'A traditional wellness beverage — not a substitute for medical treatment',
+          ],
         },
         tincture: {
           name: 'Basic Dual-Extraction Reishi Tincture',
@@ -881,6 +944,11 @@ export const I18N = {
             'Strain and reserve the alcohol extract; keep the soaked reishi pieces.',
             'Simmer the soaked reishi in the water for 60–90 minutes to make a decoction, then strain and reduce slightly.',
             'Combine the alcohol extract and reduced decoction, and bottle. Store in a cool, dark place.',
+          ],
+          benefits: [
+            'Low in calories per typical dose',
+            'A traditional hobbyist preparation, not a medical treatment',
+            'Best enjoyed in small, measured amounts',
           ],
         },
       },
@@ -901,6 +969,11 @@ export const I18N = {
             'Deglaze with a splash of wine or stock if using, and let it bubble off.',
             'Season and serve.',
           ],
+          benefits: [
+            'Firm texture with modest calories',
+            'Contains B vitamins and potassium',
+            'Naturally low in sugar',
+          ],
         },
         risotto: {
           name: 'Wine Cap Mushroom Risotto',
@@ -919,6 +992,11 @@ export const I18N = {
             'In the same pot, sauté onion in the remaining butter until soft, then add rice and toast 1 minute.',
             'Add wine and stir until absorbed, then add warm stock a ladle at a time, stirring, until the rice is creamy and just tender, about 20 minutes.',
             'Stir in the mushrooms and parmesan, and serve immediately.',
+          ],
+          benefits: [
+            'Rice provides sustained energy from complex carbohydrates',
+            'Mushrooms add B vitamins and fiber to the dish',
+            'A filling, meat-free main course',
           ],
         },
       },
@@ -939,6 +1017,11 @@ export const I18N = {
             'Grill or bake at 200 °C until tender and the butter has melted in, about 12–15 minutes.',
             'Season and serve warm.',
           ],
+          benefits: [
+            'Low in calories and carbohydrates',
+            'Contains selenium and B vitamins',
+            'A simple starter that stays low-sodium if salt is used sparingly',
+          ],
         },
         soup: {
           name: 'Classic Cream of Mushroom Soup',
@@ -958,6 +1041,11 @@ export const I18N = {
             'Gradually whisk in stock, bring to a simmer, and cook 10 minutes.',
             'Stir in cream, season, and blend partially or fully for the desired texture.',
           ],
+          benefits: [
+            'Classic comfort food that also carries the mushrooms\' B vitamins',
+            'Good source of potassium',
+            'Can be made lighter by reducing the amount of cream',
+          ],
         },
       },
       turkeyTail: {
@@ -973,6 +1061,11 @@ export const I18N = {
             'Add turkey tail pieces to water in a small pot.',
             'Bring to a boil, then simmer covered for 45–60 minutes.',
             'Strain, sweeten to taste, and serve hot.',
+          ],
+          benefits: [
+            'Essentially calorie-free unless sweetened',
+            'Caffeine-free hot drink',
+            'A traditional preparation, not a medical treatment',
           ],
         },
         broth: {
@@ -991,6 +1084,11 @@ export const I18N = {
             'Bring to a boil, then reduce to a gentle simmer, partly covered, for 2.5–3 hours.',
             'Strain out the solids.',
             'Season with salt and use as a broth or soup base.',
+          ],
+          benefits: [
+            'Low in fat and calories per serving',
+            'Vegetables add fiber and vitamin A',
+            'A traditional, mostly hands-off preparation',
           ],
         },
       },
@@ -1011,6 +1109,11 @@ export const I18N = {
             'Add garlic and soy sauce, and toss for 1 more minute.',
             'Finish with black pepper and serve.',
           ],
+          benefits: [
+            'Firm mushroom clusters are low in fat before cooking',
+            'Contain B vitamins and potassium',
+            'Naturally low in sugar',
+          ],
         },
         noodles: {
           name: 'Chestnut Mushroom Noodle Stir-Fry',
@@ -1028,6 +1131,11 @@ export const I18N = {
             'Stir-fry mushrooms in hot oil until browned, about 6 minutes.',
             'Add cooked noodles, soy sauce, and sesame oil, and toss until combined and heated through.',
             'Garnish with spring onion and sesame seeds.',
+          ],
+          benefits: [
+            'Provides sustained energy from the noodles\' carbohydrates',
+            'Mushrooms contribute B vitamins and fiber',
+            'A quick, filling one-bowl meal',
           ],
         },
       },
@@ -1048,6 +1156,11 @@ export const I18N = {
             'Dissolve miso paste into a ladle of the hot broth, then stir it back into the pot (don\'t boil after adding miso).',
             'Add enoki and tofu, warm through for 1–2 minutes, and top with spring onion.',
           ],
+          benefits: [
+            'Light, low-calorie soup',
+            'Miso adds fermented soy protein',
+            'Enoki contribute fiber and B vitamins',
+          ],
         },
         baconWrap: {
           name: 'Bacon-Wrapped Enoki Bundles',
@@ -1064,6 +1177,11 @@ export const I18N = {
             'Wrap each bundle tightly with a strip of bacon.',
             'Pan-fry seam-side down over medium heat until the bacon is crisp, turning to cook all sides, about 8 minutes.',
             'Add soy sauce and honey to the pan in the last minute to glaze, and sprinkle with sesame seeds.',
+          ],
+          benefits: [
+            'A protein-rich appetizer from the bacon and mushrooms',
+            'Enoki add fiber to help balance the richness of the bacon',
+            'Best enjoyed as an occasional treat given the bacon content',
           ],
         },
       },
@@ -1082,6 +1200,11 @@ export const I18N = {
             'Bring to a boil, then simmer gently for 10–15 minutes.',
             'Strain, sweeten to taste, and serve hot.',
           ],
+          benefits: [
+            'Essentially calorie-free unless sweetened',
+            'Ginger adds warming, digestive-friendly flavor',
+            'A traditional wellness beverage, not a medical treatment',
+          ],
         },
         soup: {
           name: 'Cordyceps Mushroom Soup',
@@ -1098,6 +1221,11 @@ export const I18N = {
             'Bring stock to a simmer with the ginger and cordyceps, and cook 15 minutes.',
             'Add chicken or tofu, and simmer until cooked through, about 10 minutes more.',
             'Season with salt and serve hot.',
+          ],
+          benefits: [
+            'High-protein soup from the chicken or tofu',
+            'Low in fat if made with lean chicken or tofu',
+            'Ginger adds warming flavor',
           ],
         },
       },
@@ -1118,6 +1246,11 @@ export const I18N = {
             'Roast on a tray, cut-side down, for 15–20 minutes until crisp at the edges.',
             'Finish with fresh thyme if using, and serve.',
           ],
+          benefits: [
+            'Low in calories and carbohydrates',
+            'Good source of B vitamins and potassium',
+            'Naturally cholesterol-free',
+          ],
         },
         tempura: {
           name: 'Maitake Tempura',
@@ -1135,6 +1268,11 @@ export const I18N = {
             'Whisk flour, egg, and cold water into a light, slightly lumpy batter.',
             'Dip mushroom clusters in the batter and fry in batches until light golden, 2–3 minutes.',
             'Drain on paper towel and serve immediately with salt or dipping sauce.',
+          ],
+          benefits: [
+            'A rare treat — battered and fried, so higher in fat than most mushroom dishes here',
+            'Maitake still contributes B vitamins and fiber',
+            'Best enjoyed occasionally rather than as an everyday dish',
           ],
         },
       },
@@ -1155,6 +1293,11 @@ export const I18N = {
             'Add morels and cook, stirring often, for 8–10 minutes until fully tender — morels must be cooked through, not just browned on the surface.',
             'Season with salt and pepper, and finish with chives.',
           ],
+          benefits: [
+            'Low in calories relative to its rich flavor',
+            'Good source of B vitamins and iron',
+            'Naturally low in sugar',
+          ],
         },
         creamsauce: {
           name: 'Morels in Cream Sauce',
@@ -1173,6 +1316,11 @@ export const I18N = {
             'Sauté shallot in butter until soft, then add morels and cook for 8–10 minutes until fully tender.',
             'Add wine and simmer until reduced by half.',
             'Stir in cream, simmer 3–4 minutes to thicken slightly, season, and serve over toast.',
+          ],
+          benefits: [
+            'A richer preparation — higher in fat from the cream and butter',
+            'Morels contribute B vitamins and iron',
+            'Best enjoyed as an occasional seasonal treat',
           ],
         },
       },
@@ -1300,7 +1448,15 @@ export const I18N = {
       recipeServingsLabel: 'Porcie',
       recipeIngredientsHeader: 'Suroviny',
       recipeStepsHeader: 'Postup',
-      recipesFootnote: 'Huby dôkladne tepelne upravte — viaceré druhy (najmä smrže) sú surové alebo nedovarené nebezpečné. Ide o všeobecné východiskové recepty — koreninu a čas prispôsobte podľa chuti.',
+      recipeNutritionHeader: 'Nutričné hodnoty (na porciu, približne)',
+      recipeKcalLabel: 'Energia',
+      recipeKcalUnit: 'kcal',
+      recipeProteinLabel: 'Bielkoviny',
+      recipeCarbsLabel: 'Sacharidy',
+      recipeFatLabel: 'Tuky',
+      recipeFiberLabel: 'Vláknina',
+      recipeBenefitsHeader: 'Prečo je to pre vás dobré',
+      recipesFootnote: 'Huby dôkladne tepelne upravte — viaceré druhy (najmä smrže) sú surové alebo nedovarené nebezpečné. Ide o všeobecné východiskové recepty — koreninu a čas prispôsobte podľa chuti. Nutričné hodnoty sú hrubé odhady, nie laboratórna analýza, a poznámky o prínosoch sú všeobecné výživové informácie, nie lekárske odporúčanie.',
     },
     substrates: {
       cvg: {
@@ -1858,6 +2014,11 @@ export const I18N = {
             'Pridajte maslo a cesnak a opekajte ďalších 3–4 minúty dozlata.',
             'Osoľte, opepite, posypte petržlenovou vňaťou a ihneď podávajte.',
           ],
+          benefits: [
+            'Nízkokalorické a pred pridaním masla prirodzene nízkotučné',
+            'Dobrý zdroj vitamínov skupiny B a draslíka',
+            'Obsahuje vlákninu vrátane beta-glukánov',
+          ],
         },
         soup: {
           name: 'Krémová polievka z hlivy ustricovitej',
@@ -1878,6 +2039,11 @@ export const I18N = {
             'Rozmixujte dohladka (alebo nechajte hrubšie), vmiešajte smotanu a dochuťte.',
             'Jemne ohrejte bez varu a podávajte horúce.',
           ],
+          benefits: [
+            'Zahrievajúce, sýte jedlo, ktoré je prirodzene bez cholesterolu',
+            'Dobrý zdroj vitamínov skupiny B z húb',
+            'Cibuľa a cesnak prispievajú alicínovými zlúčeninami',
+          ],
         },
       },
       pinkOyster: {
@@ -1897,6 +2063,11 @@ export const I18N = {
             'Vyprážajte na horúcej panvici v jednej vrstve, bez preplnenia, kým nie sú chrumkavé a opečené z oboch strán, spolu 6–8 minút.',
             'Nechajte chvíľu odkvapkať na papierovej utierke, mierne osoľte a podávajte teplé.',
           ],
+          benefits: [
+            'Pred vyprážaním prirodzene nízkotučné',
+            'Dobrý zdroj draslíka a vitamínov skupiny B',
+            'Rastlinná, menej tučná alternatíva k slanine v jedle',
+          ],
         },
         tacos: {
           name: 'Tacos s ružovou hlivou',
@@ -1915,6 +2086,11 @@ export const I18N = {
             'Opečte na horúcom oleji dozlatista, asi 8 minút, občas premiešajte.',
             'Pridajte rascu a čili korenie, varte ešte 1 minútu, potom premiešajte s limetkovou šťavou.',
             'Zohrejte tortilly, naplňte hubovou zmesou a pridajte toppingy.',
+          ],
+          benefits: [
+            'Vysoký obsah vlákniny vďaka hubám a toppingom',
+            'Dobrý rastlinný zdroj bielkovín z húb',
+            'Limetka dodáva vitamín C',
           ],
         },
       },
@@ -1937,6 +2113,11 @@ export const I18N = {
             'V poslednej minúte pridajte maslo a cesnak a podlievajte.',
             'Dokončite kvapkou citróna a podávajte.',
           ],
+          benefits: [
+            'Pevná textúra zasýti pri relatívne nízkom obsahu kalórií',
+            'Obsahuje draslík a vitamíny skupiny B',
+            'Prirodzene nízky obsah cukru',
+          ],
         },
         skewers: {
           name: 'Grilované špízy z hlivy kráľovskej',
@@ -1954,6 +2135,11 @@ export const I18N = {
             'Huby nakrájajte na hrubšie kúsky a premiešajte s polovicou glazúry; nechajte 10 minút odležať.',
             'Napichajte na špajle a grilujte alebo opekajte na strednom až vysokom ohni, často obracajte, 8–10 minút.',
             'V posledných 2 minútach potrite zvyšnou glazúrou a podávajte.',
+          ],
+          benefits: [
+            'Grilovanie namiesto vyprážania udrží pridaný tuk na miernej úrovni',
+            'Zázvor a cesnak prispievajú antioxidačnými rastlinnými látkami',
+            'Dobrý zdroj vitamínov skupiny B z húb',
           ],
         },
       },
@@ -1974,6 +2160,11 @@ export const I18N = {
             'Opekajte na masle na strednom až vysokom ohni 3–4 minúty z každej strany, kým nie sú zlaté a chrumkavé po okrajoch.',
             'V poslednej minúte pridajte cesnak, dochuťte a dokončite citrónom.',
           ],
+          benefits: [
+            'Nízky obsah sacharidov',
+            'Obsahuje vitamíny skupiny B a minerály ako draslík',
+            'Prirodzene bez cholesterolu',
+          ],
         },
         crabcakes: {
           name: 'Krabie placky z ježovca',
@@ -1991,6 +2182,11 @@ export const I18N = {
             'Zmiešajte s vajcom, strúhankou, majonézou a korením, kým hmota nedrží tvar.',
             'Vytvarujte placky a nechajte 15 minút vychladiť v chladničke.',
             'Vyprážajte na oleji na strednom ohni 3–4 minúty z každej strany dozlata.',
+          ],
+          benefits: [
+            'Dobrý rastlinný zdroj bielkovín vďaka vajcu a hubám',
+            'Menej nasýteného tuku ako klasické krabie placky',
+            'Obsahuje vitamíny skupiny B z húb',
           ],
         },
       },
@@ -2012,6 +2208,11 @@ export const I18N = {
             'Vmiešajte sójovú omáčku a sezamový olej a premiešajte.',
             'Ozdobte jarnou cibuľkou a podávajte.',
           ],
+          benefits: [
+            'Dobrý zdroj vitamínov skupiny B, najmä riboflavínu a niacínu',
+            'Obsahuje vlákninu a beta-glukány',
+            'Prirodzene nízky obsah tuku',
+          ],
         },
         dashi: {
           name: 'Vývar dashi zo shiitake s podusenými klobúčikmi',
@@ -2029,6 +2230,11 @@ export const I18N = {
             'Klobúčiky vyberte, nakrájajte a odložte.',
             'Vývar dochuťte sójovou omáčkou a mirinom, vráťte nakrájané klobúčiky a duste ešte 5 minút.',
           ],
+          benefits: [
+            'Veľmi nízky obsah tuku a kalórií',
+            'Bohatý umami vývar potrebuje menej pridanej soli na dochutenie',
+            'Shiitake prispieva vitamínmi skupiny B a minerálmi',
+          ],
         },
       },
       reishi: {
@@ -2044,7 +2250,12 @@ export const I18N = {
             'Plátky reishi vložte do vody v menšom hrnci.',
             'Priveďte do varu, potom znížte na mierny var pod pokrievkou na 60–90 minút.',
             'Precedite (plátky možno ešte raz povariť na slabší druhý nálev).',
-            'Osladťe podľa chuti a podávajte horúce.',
+            'Osláďte podľa chuti a podávajte horúce.',
+          ],
+          benefits: [
+            'Prakticky bez kalórií, pokiaľ nie je sladený',
+            'Horúci nápoj bez kofeínu',
+            'Tradičný wellness nápoj — nie náhrada lekárskej liečby',
           ],
         },
         tincture: {
@@ -2060,6 +2271,11 @@ export const I18N = {
             'Precedite a alkoholový extrakt odložte; namočené kúsky reishi si ponechajte.',
             'Namočené kúsky reishi duste vo vode 60–90 minút, aby vznikol odvar, potom precedite a mierne zredukujte.',
             'Spojte alkoholový extrakt a zredukovaný odvar a naplňte do fľaše. Skladujte na chladnom, tmavom mieste.',
+          ],
+          benefits: [
+            'Nízky obsah kalórií pri bežnej dávke',
+            'Tradičná domáca príprava, nie lekárska liečba',
+            'Najlepšie užívať v malých, odmeraných množstvách',
           ],
         },
       },
@@ -2080,6 +2296,11 @@ export const I18N = {
             'Ak používate, podlejte trochou vína alebo vývaru a nechajte odpariť.',
             'Dochuťte a podávajte.',
           ],
+          benefits: [
+            'Pevná textúra pri miernom obsahu kalórií',
+            'Obsahuje vitamíny skupiny B a draslík',
+            'Prirodzene nízky obsah cukru',
+          ],
         },
         risotto: {
           name: 'Rizoto zo stropharie obrovskej',
@@ -2098,6 +2319,11 @@ export const I18N = {
             'V tom istom hrnci opražte cibuľu na zvyšnom masle domäkka, pridajte ryžu a 1 minútu opražte.',
             'Prilejte víno a miešajte, kým sa nevsiakne, potom postupne po naberačkách pridávajte teplý vývar, za stáleho miešania, kým ryža nie je krémová a mierne tvrdá, asi 20 minút.',
             'Vmiešajte huby a parmezán a ihneď podávajte.',
+          ],
+          benefits: [
+            'Ryža dodáva dlhotrvajúcu energiu zo zložených sacharidov',
+            'Huby dodávajú jedlu vitamíny skupiny B a vlákninu',
+            'Sýte bezmäsité hlavné jedlo',
           ],
         },
       },
@@ -2118,6 +2344,11 @@ export const I18N = {
             'Grilujte alebo pečte pri 200 °C dozmäka, kým sa maslo nerozpustí, asi 12–15 minút.',
             'Dochuťte a podávajte teplé.',
           ],
+          benefits: [
+            'Nízky obsah kalórií a sacharidov',
+            'Obsahuje selén a vitamíny skupiny B',
+            'Jednoduché predjedlo, ktoré zostane nízkosolné, ak soľ použijete striedmo',
+          ],
         },
         soup: {
           name: 'Klasická krémová hubová polievka',
@@ -2137,6 +2368,11 @@ export const I18N = {
             'Postupne vmiešajte vývar, priveďte do varu a varte 10 minút.',
             'Vmiešajte smotanu, dochuťte a čiastočne alebo úplne rozmixujte podľa želanej textúry.',
           ],
+          benefits: [
+            'Klasické komfortné jedlo, ktoré zároveň nesie vitamíny skupiny B z húb',
+            'Dobrý zdroj draslíka',
+            'Dá sa odľahčiť znížením množstva smotany',
+          ],
         },
       },
       turkeyTail: {
@@ -2152,6 +2388,11 @@ export const I18N = {
             'Kúsky outkovky vložte do vody v menšom hrnci.',
             'Priveďte do varu, potom duste pod pokrievkou 45–60 minút.',
             'Precedite, osláďte podľa chuti a podávajte horúce.',
+          ],
+          benefits: [
+            'Prakticky bez kalórií, pokiaľ nie je sladený',
+            'Horúci nápoj bez kofeínu',
+            'Tradičná príprava, nie lekárska liečba',
           ],
         },
         broth: {
@@ -2170,6 +2411,11 @@ export const I18N = {
             'Priveďte do varu, potom znížte na mierny var, čiastočne prikryté, na 2,5–3 hodiny.',
             'Precedite a pevné časti vyhoďte.',
             'Osoľte a použite ako vývar alebo základ na polievku.',
+          ],
+          benefits: [
+            'Nízky obsah tuku a kalórií na porciu',
+            'Zelenina dodáva vlákninu a vitamín A',
+            'Tradičná, prevažne bezobslužná príprava',
           ],
         },
       },
@@ -2190,6 +2436,11 @@ export const I18N = {
             'Pridajte cesnak a sójovú omáčku, premiešavajte ešte 1 minútu.',
             'Dokončite čiernym korením a podávajte.',
           ],
+          benefits: [
+            'Pevné trsy húb sú pred varením nízkotučné',
+            'Obsahujú vitamíny skupiny B a draslík',
+            'Prirodzene nízky obsah cukru',
+          ],
         },
         noodles: {
           name: 'Rezance so šupinovkou gaštanovou',
@@ -2207,6 +2458,11 @@ export const I18N = {
             'Huby opečte na horúcom oleji dozlata, asi 6 minút.',
             'Pridajte uvarené rezance, sójovú omáčku a sezamový olej a premiešajte, kým sa neprehreje.',
             'Ozdobte jarnou cibuľkou a sezamovými semienkami.',
+          ],
+          benefits: [
+            'Dodáva dlhotrvajúcu energiu zo sacharidov v rezancoch',
+            'Huby prispievajú vitamínmi skupiny B a vlákninou',
+            'Rýchle, sýte jedlo z jednej misky',
           ],
         },
       },
@@ -2227,6 +2483,11 @@ export const I18N = {
             'Miso pastu rozpustite v naberačke horúceho vývaru, potom vmiešajte späť do hrnca (po pridaní misa už nevarte).',
             'Pridajte enoki a tofu, nechajte 1–2 minúty prehriať a ozdobte jarnou cibuľkou.',
           ],
+          benefits: [
+            'Ľahká, nízkokalorická polievka',
+            'Miso dodáva fermentovanú sójovú bielkovinu',
+            'Enoki prispieva vlákninou a vitamínmi skupiny B',
+          ],
         },
         baconWrap: {
           name: 'Enoki zabalené v slanine',
@@ -2243,6 +2504,11 @@ export const I18N = {
             'Každý zväzok pevne obaľte plátkom slaniny.',
             'Opekajte švom nadol na strednom ohni, kým slanina nie je chrumkavá, obracajte, aby sa prepiekli všetky strany, asi 8 minút.',
             'V poslednej minúte pridajte na panvicu sójovú omáčku a med, aby vznikla glazúra, a posypte sezamom.',
+          ],
+          benefits: [
+            'Bielkovinovo bohaté predjedlo zo slaniny a húb',
+            'Enoki dodáva vlákninu, ktorá vyváži bohatosť slaniny',
+            'Najlepšie ako príležitostná pochúťka vzhľadom na obsah slaniny',
           ],
         },
       },
@@ -2261,6 +2527,11 @@ export const I18N = {
             'Priveďte do varu, potom jemne duste 10–15 minút.',
             'Precedite, osláďte podľa chuti a podávajte horúce.',
           ],
+          benefits: [
+            'Prakticky bez kalórií, pokiaľ nie je sladený',
+            'Zázvor dodáva zahrievajúcu, tráveniu prospešnú chuť',
+            'Tradičný wellness nápoj, nie lekárska liečba',
+          ],
         },
         soup: {
           name: 'Hubová polievka s kordycepsom',
@@ -2277,6 +2548,11 @@ export const I18N = {
             'Vývar priveďte k varu so zázvorom a kordycepsom a varte 15 minút.',
             'Pridajte kuracie mäso alebo tofu a duste, kým sa neuvarí, ešte asi 10 minút.',
             'Osoľte a podávajte horúce.',
+          ],
+          benefits: [
+            'Vysokobielkovinová polievka z kuracieho mäsa alebo tofu',
+            'Nízky obsah tuku, ak sa pripraví z chudého kuracieho mäsa alebo tofu',
+            'Zázvor dodáva zahrievajúcu chuť',
           ],
         },
       },
@@ -2297,6 +2573,11 @@ export const I18N = {
             'Pečte na plechu rezom nadol 15–20 minút, kým nie sú okraje chrumkavé.',
             'Ak chcete, dokončite čerstvým tymianom a podávajte.',
           ],
+          benefits: [
+            'Nízky obsah kalórií a sacharidov',
+            'Dobrý zdroj vitamínov skupiny B a draslíka',
+            'Prirodzene bez cholesterolu',
+          ],
         },
         tempura: {
           name: 'Tempura z maitake',
@@ -2314,6 +2595,11 @@ export const I18N = {
             'Múku, vajce a studenú vodu vyšľahajte na ľahké, mierne hrudkovité cestíčko.',
             'Trsy húb namáčajte do cestíčka a vyprážajte po dávkach do svetlozlata, 2–3 minúty.',
             'Nechajte odkvapkať na papierovej utierke a ihneď podávajte so soľou alebo dipom.',
+          ],
+          benefits: [
+            'Vzácna pochúťka — v cestíčku a vyprážaná, preto tučnejšia ako väčšina hubových jedál tu uvedených',
+            'Maitake stále prispieva vitamínmi skupiny B a vlákninou',
+            'Najlepšie príležitostne, nie ako každodenné jedlo',
           ],
         },
       },
@@ -2334,6 +2620,11 @@ export const I18N = {
             'Pridajte smrže a varte, často premiešavajte, 8–10 minút, kým nie sú úplne mäkké — smrže musia byť prevarené celé, nielen opečené na povrchu.',
             'Dochuťte soľou a korením a dokončite pažítkou.',
           ],
+          benefits: [
+            'Nízky obsah kalórií vzhľadom na bohatú chuť',
+            'Dobrý zdroj vitamínov skupiny B a železa',
+            'Prirodzene nízky obsah cukru',
+          ],
         },
         creamsauce: {
           name: 'Smrže v smotanovej omáčke',
@@ -2352,6 +2643,11 @@ export const I18N = {
             'Šalotku opražte na masle domäkka, potom pridajte smrže a varte 8–10 minút, kým nie sú úplne mäkké.',
             'Prilejte víno a duste, kým sa množstvo nezredukuje na polovicu.',
             'Vmiešajte smotanu, 3–4 minúty duste, kým mierne nezhustne, dochuťte a podávajte na hrianke.',
+          ],
+          benefits: [
+            'Bohatšia príprava — vyšší obsah tuku zo smotany a masla',
+            'Smrže prispievajú vitamínmi skupiny B a železom',
+            'Najlepšie ako príležitostná sezónna pochúťka',
           ],
         },
       },
