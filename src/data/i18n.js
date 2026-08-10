@@ -513,6 +513,20 @@ export const I18N = {
         ],
         hygiene: 'Hold the mash temperature carefully for proper starch-to-sugar conversion, and sterilize thoroughly afterward — same care as with the liquid culture version of this recipe.',
       },
+      dextrose: {
+        name: 'Dextrose Agar (DA)',
+        description: 'Pure dextrose and agar with no other nutrient source — a minimal, clean sugar medium for isolation and simple mycelium checks.',
+        ratingNote: 'Good, simple option — plain sugar nutrition gives clean, easy-to-read growth without the richness (or contamination risk) of malt- or potato-based agars.',
+        ingredients: ['Dextrose (glucose)', 'Agar-agar powder', 'Distilled/RO water (to final volume)'],
+        steps: [
+          'Stir {i0w} dextrose and {i1w} agar-agar powder into {V} water in a heat-safe flask or jar.',
+          'Bring to a gentle boil for 1–2 minutes, stirring constantly, until the agar fully dissolves (liquid turns clear).',
+          'Pour into heat-tolerant jars or bottles, loosely capped, and pressure sterilize at 15 psi (121°C) for 20–25 minutes.',
+          'Let cool until just handleable (around 50–60°C, still liquid), then pour into sterile petri dishes in a still-air box or flow hood.',
+          'Leave lids slightly ajar until set, then close and store upside-down in the fridge until use.',
+        ],
+        hygiene: 'With only sugar and no other nutrients, this stays fairly clean, but sterilize fully as usual — fast-growing bacteria can still exploit the dextrose.',
+      },
     },
     grain: {
       rye: {
@@ -2852,6 +2866,20 @@ export const I18N = {
           'Nechajte viečka pootvorené, kým stuhne, potom zatvorte a skladujte hore dnom v chladničke do použitia.',
         ],
         hygiene: 'Starostlivo dodržujte teplotu vystierania pre správnu premenu škrobu na cukor a následne dôkladne sterilizujte — rovnaká starostlivosť ako pri tekutej verzii tohto receptu.',
+      },
+      dextrose: {
+        name: 'Dextrózový agar (DA)',
+        description: 'Čistá dextróza a agar bez akéhokoľvek iného zdroja živín — minimalistické, čisté cukrové médium na izoláciu a jednoduché kontroly mycélia.',
+        ratingNote: 'Dobrá, jednoduchá voľba — čistá cukrová výživa poskytuje čistý, ľahko čitateľný rast bez bohatosti (a rizika kontaminácie) sladových alebo zemiakových agarov.',
+        ingredients: ['Dextróza (glukóza)', 'Agar-agar prášok', 'Destilovaná/RO voda (do finálneho objemu)'],
+        steps: [
+          'Vmiešajte {i0w} dextrózy a {i1w} agar-agar prášku do {V} vody v teplovzdornej banke alebo pohári.',
+          'Priveďte k miernemu varu na 1 – 2 minúty za stáleho miešania, kým sa agar úplne nerozpustí (tekutina zosvetlie).',
+          'Nalejte do teplovzdorných pohárov alebo fliaš, voľne uzavrite a tlakovo sterilizujte pri 15 psi (121 °C) 20 – 25 minút.',
+          'Nechajte vychladnúť, kým sa dá bezpečne uchopiť (cca 50 – 60 °C, ešte tekuté), potom nalejte do sterilných Petriho misiek v boxe s nehybným vzduchom alebo laminárnom boxe.',
+          'Nechajte viečka pootvorené, kým stuhne, potom zatvorte a skladujte hore dnom v chladničke do použitia.',
+        ],
+        hygiene: 'Keďže obsahuje len cukor a žiadne iné živiny, zostáva pomerne čisté, no sterilizujte dôkladne ako obvykle — rýchlo rastúce baktérie môžu dextrózu využiť tiež.',
       },
     },
     grain: {

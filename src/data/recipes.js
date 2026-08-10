@@ -307,4 +307,16 @@ export const AGAR_RECIPES = {
       };
     },
   },
+  dextrose: {
+    stars: 3,
+    calc(V) {
+      const dextrose = V * 0.02;
+      const agar = V * 0.02;
+      return {
+        ingredients: [{ weightG: dextrose }, { weightG: agar }, { volumeMl: V }],
+        totalVolume: V,
+        totalWeight: dextrose + agar + V,
+      };
+    },
+  },
 };
