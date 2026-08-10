@@ -141,6 +141,9 @@
   ol.steps { padding-left: 22px; margin: 0; }
   ol.steps li { margin-bottom: 10px; }
 
+  ul.ingredients { padding-left: 22px; margin: 0; }
+  ul.ingredients li { margin-bottom: 4px; }
+
   .badge {
     display: inline-block;
     background: var(--warn-bg);

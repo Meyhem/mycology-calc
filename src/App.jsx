@@ -12,6 +12,7 @@ import GrainTab from './components/GrainTab';
 import LcTab from './components/LcTab';
 import AgarTab from './components/AgarTab';
 import SpeciesTab from './components/SpeciesTab';
+import RecipesTab from './components/RecipesTab';
 import ConditionsTab from './components/ConditionsTab';
 import YieldTab from './components/YieldTab';
 import DryingTab from './components/DryingTab';
@@ -68,6 +69,9 @@ export default function App() {
 
   // Species guide tab state
   const [speciesId, setSpeciesId] = useState(SPECIES_IDS[0]);
+
+  // Recipes tab state
+  const [recipesSpeciesId, setRecipesSpeciesId] = useState(SPECIES_IDS[0]);
 
   // Fruiting conditions check tab state
   const [conditionsSpeciesId, setConditionsSpeciesId] = useState(SPECIES_IDS[0]);
@@ -129,6 +133,9 @@ export default function App() {
   useEffect(() => {
     if (!SPECIES[speciesId]) setSpeciesId(SPECIES_IDS[0]);
   }, [speciesId]);
+  useEffect(() => {
+    if (!SPECIES[recipesSpeciesId]) setRecipesSpeciesId(SPECIES_IDS[0]);
+  }, [recipesSpeciesId]);
   useEffect(() => {
     if (!SPECIES[conditionsSpeciesId]) setConditionsSpeciesId(SPECIES_IDS[0]);
   }, [conditionsSpeciesId]);
@@ -265,6 +272,15 @@ export default function App() {
         grainTexts={t.grain}
         speciesId={speciesId}
         setSpeciesId={setSpeciesId}
+      />
+
+      <RecipesTab
+        active={activeTab === 'recipes'}
+        ui={t.ui}
+        speciesTexts={t.species}
+        recipeTexts={t.culinaryRecipes}
+        speciesId={recipesSpeciesId}
+        setSpeciesId={setRecipesSpeciesId}
       />
 
       <ConditionsTab
