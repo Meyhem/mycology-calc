@@ -13,7 +13,6 @@ import LcTab from './components/LcTab';
 import AgarTab from './components/AgarTab';
 import SpeciesTab from './components/SpeciesTab';
 import YieldTab from './components/YieldTab';
-import SterilizeTab from './components/SterilizeTab';
 import DryingTab from './components/DryingTab';
 
 const LANG_KEY = 'subcalc_lang';
@@ -73,14 +72,6 @@ export default function App() {
   const [yieldSpeciesId, setYieldSpeciesId] = useState(SPECIES_IDS[0]);
   const [yieldSubstrateId, setYieldSubstrateId] = useState(SUBSTRATE_IDS[0]);
   const [yieldWetWeight, setYieldWetWeight] = useState(3000);
-
-  // Sterilization helper tab state
-  const [pcContainerId, setPcContainerId] = useState('quart');
-  const [pcJarCount, setPcJarCount] = useState(6);
-  const [pcAltitude, setPcAltitude] = useState(0);
-  const [dilutionTargetVol, setDilutionTargetVol] = useState(500);
-  const [dilutionTargetConc, setDilutionTargetConc] = useState(10);
-  const [dilutionStockConc, setDilutionStockConc] = useState(70);
 
   // Drying helper tab state
   const [dryingSpeciesId, setDryingSpeciesId] = useState(SPECIES_IDS[0]);
@@ -276,24 +267,6 @@ export default function App() {
         setSubstrateId={setYieldSubstrateId}
         wetWeight={yieldWetWeight}
         setWetWeight={setYieldWetWeight}
-        unit={unit}
-      />
-
-      <SterilizeTab
-        active={activeTab === 'sterilize'}
-        ui={t.ui}
-        containerId={pcContainerId}
-        setContainerId={setPcContainerId}
-        jarCount={pcJarCount}
-        setJarCount={setPcJarCount}
-        altitude={pcAltitude}
-        setAltitude={setPcAltitude}
-        dilutionTargetVol={dilutionTargetVol}
-        setDilutionTargetVol={setDilutionTargetVol}
-        dilutionTargetConc={dilutionTargetConc}
-        setDilutionTargetConc={setDilutionTargetConc}
-        dilutionStockConc={dilutionStockConc}
-        setDilutionStockConc={setDilutionStockConc}
         unit={unit}
       />
 
