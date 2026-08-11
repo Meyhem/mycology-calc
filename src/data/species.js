@@ -9,6 +9,7 @@ export const SUBSTRATE_CATEGORY = {
   cardboard: 'lowNutrient',
   sawdust: 'highNutrient',
   soil: 'soil',
+  fuelpellets: 'lowNutrient',
 };
 
 // All figures are rough, widely-cited home-cultivation ranges, not lab measurements.
@@ -19,7 +20,7 @@ export const SUBSTRATE_CATEGORY = {
 export const SPECIES = {
   oyster: {
     stars: 5,
-    recommendedSubstrates: ['cvg', 'straw', 'coffee', 'cardboard'],
+    recommendedSubstrates: ['cvg', 'straw', 'coffee', 'cardboard', 'fuelpellets'],
     recommendedGrains: ['rye', 'wheatberries', 'popcorn', 'sorghum'],
     colonizeTempC: [21, 27],
     fruitTempC: [10, 21],
@@ -35,7 +36,7 @@ export const SPECIES = {
   },
   pinkOyster: {
     stars: 4,
-    recommendedSubstrates: ['cvg', 'straw', 'coffee'],
+    recommendedSubstrates: ['cvg', 'straw', 'coffee', 'fuelpellets'],
     recommendedGrains: ['rye', 'sorghum'],
     colonizeTempC: [24, 30],
     fruitTempC: [18, 28],

@@ -21,6 +21,26 @@ export const SUBSTRATES = {
       };
     },
   },
+  soil: {
+    stars: 4,
+    calc(V) {
+      const soilVol = V * 3;
+      const soilWeight = soilVol * 0.7;
+      const compostWeight = soilWeight * 0.3;
+      const gypsumWeight = (soilWeight + compostWeight) * 0.02;
+      const water = (soilWeight + compostWeight) * 0.15;
+      return {
+        ingredients: [
+          { volumeMl: soilVol, weightG: soilWeight },
+          { weightG: compostWeight },
+          { weightG: gypsumWeight },
+          { volumeMl: water },
+        ],
+        totalVolume: soilVol,
+        totalWeight: soilWeight + compostWeight + gypsumWeight + water,
+      };
+    },
+  },
   masters: {
     stars: 5,
     calc(V) {
@@ -121,23 +141,18 @@ export const SUBSTRATES = {
       };
     },
   },
-  soil: {
+  fuelpellets: {
     stars: 4,
     calc(V) {
-      const soilVol = V * 3;
-      const soilWeight = soilVol * 0.7;
-      const compostWeight = soilWeight * 0.3;
-      const gypsumWeight = (soilWeight + compostWeight) * 0.02;
-      const water = (soilWeight + compostWeight) * 0.15;
+      const dryPelletTotal = V * 0.4;
+      const soakWater = dryPelletTotal * 3;
       return {
         ingredients: [
-          { volumeMl: soilVol, weightG: soilWeight },
-          { weightG: compostWeight },
-          { weightG: gypsumWeight },
-          { volumeMl: water },
+          { weightG: dryPelletTotal },
+          { volumeMl: soakWater },
         ],
-        totalVolume: soilVol,
-        totalWeight: soilWeight + compostWeight + gypsumWeight + water,
+        totalVolume: V,
+        totalWeight: dryPelletTotal,
       };
     },
   },
