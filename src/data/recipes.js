@@ -121,6 +121,26 @@ export const SUBSTRATES = {
       };
     },
   },
+  soil: {
+    stars: 4,
+    calc(V) {
+      const soilVol = V * 3;
+      const soilWeight = soilVol * 0.7;
+      const compostWeight = soilWeight * 0.3;
+      const gypsumWeight = (soilWeight + compostWeight) * 0.02;
+      const water = (soilWeight + compostWeight) * 0.15;
+      return {
+        ingredients: [
+          { volumeMl: soilVol, weightG: soilWeight },
+          { weightG: compostWeight },
+          { weightG: gypsumWeight },
+          { volumeMl: water },
+        ],
+        totalVolume: soilVol,
+        totalWeight: soilWeight + compostWeight + gypsumWeight + water,
+      };
+    },
+  },
 };
 export const LC_RECIPES = {
   lme: {

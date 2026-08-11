@@ -243,6 +243,22 @@ export const I18N = {
         ],
         hygiene: 'The bran addition makes this substrate nutrient-rich and contamination-prone — full pressure sterilization with extended time is essential due to the density of packed sawdust.',
       },
+      soil: {
+        name: 'Enriched Garden Soil (Compost + Gypsum)',
+        description: 'General-purpose substrate for soil-loving mushrooms (button/portobello-type and outdoor bed species) — garden soil enriched with compost. Ratio ≈ 1 part spawn : 3 parts substrate by volume.',
+        ratingNote: 'Good — a flexible, low-cost option for soil/manure-loving species, though yields are more modest than dedicated manure compost.',
+        ingredients: ['Garden soil (screened, moist)', 'Finished compost', 'Gypsum (calcium sulfate)', 'Water (to fine-tune moisture)'],
+        steps: [
+          'Screen out rocks and debris from {i0v} garden soil ({i0w}).',
+          'Mix in {i1w} finished compost to enrich the soil with organic matter.',
+          'Add {i2w} gypsum to improve structure and reduce compaction.',
+          'Adjust moisture with up to {i3v} water until the mix holds together when squeezed but doesn\'t drip.',
+          'Pasteurize the mix at 60–65°C for 1–2 hours (tray pasteurization or steam) to knock back competitors while preserving beneficial soil microbes.',
+          'Let cool to room temperature, then break apart your grain spawn ({V}) and mix thoroughly into the soil at roughly a 1:3 ratio.',
+          'Fill trays or tubs, cover with a casing layer once colonized, and incubate at 21–24°C in the dark.',
+        ],
+        hygiene: 'Garden soil carries a natural microbial community — pasteurize (not sterilize) to preserve helpful competitors while reducing pathogen load.',
+      },
     },
     lc: {
       lme: {
@@ -2596,6 +2612,22 @@ export const I18N = {
           'Uzavrite a nechajte prerásť v tme pri 21 – 24 °C — tento substrát je hustejší a zvyčajne trvá dlhšie (3 – 5+ týždňov) než substráty na báze obilia.',
         ],
         hygiene: 'Pridanie otrúb robí tento substrát bohatým na živiny a náchylným na kontamináciu — plná tlaková sterilizácia s predĺženým časom je nevyhnutná kvôli hustote napchaných pilín.',
+      },
+      soil: {
+        name: 'Obohatená záhradná zemina (kompost + sadra)',
+        description: 'Univerzálny substrát pre huby milujúce zeminu (pečiarka/portobello a vonkajšie záhony). Zemina obohatená kompostom. Pomer ≈ 1 diel osiva : 3 diely substrátu podľa objemu.',
+        ratingNote: 'Dobré — flexibilná, lacná voľba pre druhy milujúce zeminu/hnoj, hoci výnosy sú skromnejšie než pri dedikovanom kompostovanom hnoji.',
+        ingredients: ['Záhradná zemina (preosiata, vlhká)', 'Hotový kompost', 'Sadra (síran vápenatý)', 'Voda (na doladenie vlhkosti)'],
+        steps: [
+          'Preosejte {i0v} záhradnej zeminy ({i0w}), aby ste odstránili kamene a nečistoty.',
+          'Primiešajte {i1w} hotového kompostu na obohatenie zeminy o organickú hmotu.',
+          'Pridajte {i2w} sadry na zlepšenie štruktúry a zníženie zliepania.',
+          'Upravte vlhkosť pridaním až {i3v} vody, kým zmes pri stlačení nedrží pokope, ale nekvapká.',
+          'Pasterizujte zmes pri 60 – 65 °C počas 1 – 2 hodín (pasterizácia v podnose alebo parou), aby ste odstránili konkurentov a zachovali prospešné pôdne mikroorganizmy.',
+          'Nechajte vychladnúť na izbovú teplotu, potom rozdrvte hubové osivo ({V}) a dôkladne premiešajte do zeminy v pomere približne 1:3.',
+          'Naplňte podnosy alebo nádoby, po prerastení prekryte vrstvou zeminy (casing layer) a nechajte plodiť pri 21 – 24 °C v tme.',
+        ],
+        hygiene: 'Záhradná zemina obsahuje prirodzené mikrobiálne spoločenstvo — pasterizujte (nesterilizujte), aby prospešní konkurenti zostali nažive a zároveň sa znížila záťaž patogénmi.',
       },
     },
     lc: {

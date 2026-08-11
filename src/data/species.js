@@ -8,6 +8,7 @@ export const SUBSTRATE_CATEGORY = {
   coffee: 'lowNutrient',
   cardboard: 'lowNutrient',
   sawdust: 'highNutrient',
+  soil: 'soil',
 };
 
 // All figures are rough, widely-cited home-cultivation ranges, not lab measurements.
@@ -114,7 +115,7 @@ export const SPECIES = {
   },
   wineCap: {
     stars: 3,
-    recommendedSubstrates: ['straw', 'cardboard'],
+    recommendedSubstrates: ['straw', 'cardboard', 'soil'],
     recommendedGrains: ['rye', 'wheatberries', 'sorghum'],
     colonizeTempC: [21, 27],
     fruitTempC: [10, 24],
@@ -124,13 +125,13 @@ export const SPECIES = {
     daysToPin: [14, 30],
     flushIntervalDays: [14, 30],
     numFlushes: [2, 4],
-    yieldPctWet: { lowNutrient: [10, 20] },
+    yieldPctWet: { lowNutrient: [10, 20], soil: [8, 16] },
     dryTempC: [45, 55],
     dryTimeHours: [6, 10],
   },
   buttonAgaricus: {
     stars: 3,
-    recommendedSubstrates: ['manure'],
+    recommendedSubstrates: ['manure', 'soil'],
     recommendedGrains: ['rye', 'wheatberries'],
     colonizeTempC: [24, 27],
     fruitTempC: [15, 18],
@@ -140,7 +141,7 @@ export const SPECIES = {
     daysToPin: [18, 25],
     flushIntervalDays: [10, 14],
     numFlushes: [3, 5],
-    yieldPctWet: { manure: [10, 18] },
+    yieldPctWet: { manure: [10, 18], soil: [8, 15] },
     dryTempC: [40, 50],
     dryTimeHours: [6, 10],
   },
