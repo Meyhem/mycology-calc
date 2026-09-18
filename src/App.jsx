@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { SUBSTRATES, LC_RECIPES, AGAR_RECIPES } from './data/recipes';
+import { SUBSTRATES, LC_RECIPES, AGAR_RECIPES, CVG_DEFAULT_SPAWN_RATIO } from './data/recipes';
 import { GRAIN_RECIPES } from './data/grain';
 import { SPECIES } from './data/species';
 import { I18N } from './data/i18n';
@@ -51,6 +51,7 @@ export default function App() {
   // Substrate tab state
   const [substrateId, setSubstrateId] = useState(SUBSTRATE_IDS[0]);
   const [spawn, setSpawn] = useState(1000);
+  const [substrateRatio, setSubstrateRatio] = useState(CVG_DEFAULT_SPAWN_RATIO);
 
   // Liquid culture tab state
   const [lcId, setLcId] = useState(LC_IDS[0]);
@@ -149,8 +150,8 @@ export default function App() {
   const substrateResult = useMemo(() => {
     const spawnNum = parseFloat(spawn);
     if (!spawnNum || spawnNum <= 0) return null;
-    return SUBSTRATES[substrateId].calc(spawnNum);
-  }, [substrateId, spawn]);
+    return SUBSTRATES[substrateId].calc(spawnNum, substrateRatio);
+  }, [substrateId, spawn, substrateRatio]);
 
   const lcTotalVolume = useMemo(() => {
     const jarVolNum = parseFloat(lcJarVol);
@@ -215,6 +216,8 @@ export default function App() {
         setSubstrateId={setSubstrateId}
         spawn={spawn}
         setSpawn={setSpawn}
+        substrateRatio={substrateRatio}
+        setSubstrateRatio={setSubstrateRatio}
         result={substrateResult}
         unit={unit}
       />

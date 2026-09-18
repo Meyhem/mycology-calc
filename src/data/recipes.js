@@ -1,9 +1,12 @@
+export const CVG_SPAWN_RATIOS = [1, 2, 3, 4];
+export const CVG_DEFAULT_SPAWN_RATIO = 2;
+
 export const SUBSTRATES = {
   cvg: {
     stars: 5,
-    calc(V) {
-      const coirVol = V;
-      const vermVol = V;
+    calc(V, spawnRatio = CVG_DEFAULT_SPAWN_RATIO) {
+      const coirVol = (V * spawnRatio) / 2;
+      const vermVol = (V * spawnRatio) / 2;
       const coirDryWeight = coirVol * 0.16;
       const coirWater = coirVol * 0.75;
       const vermWeight = vermVol * 0.13;

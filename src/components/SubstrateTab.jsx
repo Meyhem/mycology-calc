@@ -2,9 +2,9 @@ import RecipeSelect from './RecipeSelect';
 import RatingLine from './RatingLine';
 import ResultsTable from './ResultsTable';
 import StepsList from './StepsList';
-import { SUBSTRATES } from '../data/recipes';
+import { SUBSTRATES, CVG_SPAWN_RATIOS } from '../data/recipes';
 
-export default function SubstrateTab({ active, ui, texts, substrateId, setSubstrateId, spawn, setSpawn, result, unit }) {
+export default function SubstrateTab({ active, ui, texts, substrateId, setSubstrateId, spawn, setSpawn, substrateRatio, setSubstrateRatio, result, unit }) {
   const t = texts[substrateId];
   const s = SUBSTRATES[substrateId];
 
@@ -17,6 +17,23 @@ export default function SubstrateTab({ active, ui, texts, substrateId, setSubstr
           <div className="desc" id="substrateDesc">{t.description}</div>
           <RatingLine id="substrateRating" stars={s.stars} note={t.ratingNote} />
         </div>
+        {substrateId === 'cvg' && (
+          <div className="field">
+            <label htmlFor="substrateRatio" id="substrateRatioLabel">{ui.substrateRatioLabel}</label>
+            <select
+              id="substrateRatio"
+              value={substrateRatio}
+              onChange={(e) => setSubstrateRatio(Number(e.target.value))}
+            >
+              {CVG_SPAWN_RATIOS.map((n) => (
+                <option key={n} value={n}>
+                  {ui.substrateRatioOptions[n]}
+                </option>
+              ))}
+            </select>
+            <div className="desc" id="substrateRatioTip">{ui.substrateRatioTip}</div>
+          </div>
+        )}
         <div className="field">
           <label htmlFor="spawn" id="spawnLabel">{ui.spawnLabel}</label>
           <input
